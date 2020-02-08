@@ -1,0 +1,119 @@
+﻿@model UserLoginViewModel
+
+@{
+	Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+	ViewBag.Title = "登入";
+
+	bool useCaptchaValid = ViewBag.UseCaptchaValid;
+
+}
+
+
+
+@section Styles {
+	<style type="text/css">
+		#EmptyLayout {
+			background: #fff;
+		}
+
+		#BodyBg {
+			min-height: 100%;
+			min-width: 100%;
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
+
+		#SubmitForm {
+			margin: -230px auto 0 auto;
+			padding: 5px 0;
+			width: 340px;
+			max-width: 100%;
+			position: absolute;
+			top:44%;
+			right: 10%;
+			z-index: 999;
+		}
+
+		#SubmitForm .panel {
+			border: none;
+			border-radius: 10px;
+			box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.3);
+		}
+
+		#SubmitForm .panel-heading {
+			border-radius: 10px 10px 0 0;
+			font-size: 24px;
+			font-weight: bold;
+		}
+		#SubmitForm .panel-body {
+			padding: 35px 20px 30px;
+			position: relative;
+		}
+		#SubmitForm .form-group {
+			margin-bottom: 30px;
+		}
+
+		#StatusMsg {
+			position: absolute;
+		}
+
+		@@media (max-width: 500px) {
+			#SubmitForm {
+				margin: 0 auto;
+				position: relative;
+				top: 0;
+				left: 0;
+			}
+		}
+	</style>
+
+}
+
+
+
+<div id="SubmitForm">
+	<div class="panel panel-primary">
+		<div class="panel-heading">@Items.TplConfig.Title</div>
+
+
+		<form class="panel-body" method="post" action="" ext-one-submit="">
+			<partial name="_StatusMsg" />
+
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+					@Html.BsTextBoxFor(m => m.Account, new { placeholder = "帳號", autofocus = "" })
+				</div>
+				<span class="form-tip">@Html.ValidationMessageFor(m => m.Account)</span>
+			</div>
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+					@Html.PasswordFor(m => m.Password, new { Class = "form-control", placeholder = "密碼" })
+				</div>
+				<span class="form-tip">@Html.ValidationMessageFor(m => m.Password)</span>
+			</div>
+
+@*
+	
+			@if (useCaptchaValid)
+			{
+				<div class="form-group">
+					<div class="input-group">			
+						@Html.Captcha(4, "_LoginCaptcha")
+					</div>
+				</div>				
+			}
+*@			
+
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary btn-block">登入 <i class="fa fa-sign-in fa-lg"></i></button>
+			</div>
+
+		</form>
+	</div>
+
+
+</div>
+

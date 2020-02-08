@@ -1,0 +1,33 @@
+﻿
+@if (!User.IsInRole("DevelopAdmin"))
+{
+	<style id="DevToolsStyle" type="text/css">.dev-tools { display: none; } </style>
+}
+
+
+<script type="text/javascript">
+	jQuery(function ($) {
+	    $('body').on('konami', function () { $('#DevToolsStyle').remove(); });
+	});
+</script>
+
+
+@*狀態訊息*@
+<div id="StatusMsg">
+	@if (TempData["StatusSuccess"] != null)
+	{
+		<span class="alert alert-success twinkle"><i class="fa fa-info-circle fa-lg fa-fw"></i> @TempData["StatusSuccess"]</span>
+	}
+	@if (TempData["StatusError"] != null)
+	{
+		<span class="alert alert-danger twinkle"><i class="fa fa-warning fa-lg fa-fw"></i> @TempData["StatusError"]</span>
+	}
+</div>
+
+@Html.ValidationSummary(null, new {
+	@class = "alert alert-danger dev-tools hidden",
+	style = "position:absolute; z-index:9999; right:0", 
+	data_valmsg_summary = "", 
+})
+
+

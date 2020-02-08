@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+@{
+	string sidebarFlag = Context.Request.Cookies["sidebar_menu_hide"];
+	string menuToggle = (sidebarFlag == "true" ? "menu-toggle" : "init");
+}
+<html>
+<head>
+	<partial name="_HeadMeta" />
+
+	<title>@ViewBag.Title | @Items.TplConfig.Title</title>
+
+	<partial name="_Styles" />
+	@RenderSection("Styles", required: false)
+	
+	<partial name="_Scripts" />
+	<script src="~/Scripts/pages/main-layout.js"></script>
+</head>
+<body id="MainLayout" class="@menuToggle">
+
+	<partial name="_StatusMsg" />
+	
+	<div id="NavbarWrapper" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="navbar-header">
+			<span id="MenuToggle" class="navbar-toggle menu-toggle"><i class="fa fa-bars fa-lg"></i></span>
+			<a id="Logo" class="navbar-brand" href="~/">@Items.TplConfig.Title</a>
+
+			<span class="navbar-toggle collapsed" data-toggle="collapse" data-target="#NavbarCollapse">
+				<i class="fa fa-bars"></i>
+			</span>
+		</div>
+
+		<div id="NavbarCollapse" class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				@*
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">選單<i class="fa fa-caret-down fa-fw"></i></a>
+					<ul class="dropdown-menu">
+						<li><a href="#">item 1</a></li>
+						<li><a href="#">item 1</a></li>
+						<li class="divider"></li>
+					</ul>
+				</li>
+				*@
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">				
+				<partial name="_NavbarDevelop" />
+				<partial name="_NavbarUser" />
+			</ul> 
+		</div>
+	</div>
+
+
+	<div id="MenuWrapper" class="sidebar">
+		<partial name="_Sidebar" />
+	</div>
+
+	<partial name="_Breadcrumb" />
+
+	<div id="ContainerWrapper" class="clearfix">
+		@RenderBody()
+	</div>
+
+	@RenderSection("Scripts", required: false)
+
+	<a id="GotoTop" class="hide" href="#MainLayout"><i class="fa fa-arrow-up fa-lg"></i></a>
+</body>
+</html>
+
+@RenderSection("Export", required: false)

@@ -1,0 +1,518 @@
+﻿/*=[ animation ]===========================================*/
+/*=[ background-size ]===========================================*/
+/*=[ background-size ]===========================================*/
+/*=[ border-radius ]===========================================*/
+/*=[ box-shadow ]===========================================*/
+/*=[ box-sizing ]===========================================*/
+/*=[ opacity ]===========================================*/
+/*=[ text-shadow ]===========================================*/
+/*=[ transition ]===========================================*/
+/*=[ transform ]===========================================*/
+/*=[ user-select ]===========================================*/
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft JhengHei", "微軟正黑體", "微软雅黑", "メイリオ", "맑은 고딕", sans-serif;
+}
+#MainLayout {
+  padding-top: 40px;
+  padding-left: 160px;
+  -webkit-transition: padding 0.5s;
+  -moz-transition: padding 0.5s;
+  -ms-transition: padding 0.5s;
+  -o-transition: padding 0.5s;
+  transition: padding 0.5s;
+}
+#NavbarWrapper {
+  min-height: 40px;
+  -webkit-transition: top 0.5s;
+  -moz-transition: top 0.5s;
+  -ms-transition: top 0.5s;
+  -o-transition: top 0.5s;
+  transition: top 0.5s;
+}
+#NavbarWrapper .navbar-brand {
+  height: 40px;
+  padding: 8px 10px;
+}
+#NavbarWrapper .navbar-collapse {
+  padding: 0;
+  padding-right: 15px;
+}
+#NavbarWrapper .navbar-nav > li > a {
+  padding: 10px;
+}
+#NavbarWrapper .navbar-nav {
+  margin: 0;
+}
+#NavbarWrapper .navbar-toggle {
+  padding: 7px 8px;
+}
+#NavbarWrapper .navbar-toggle {
+  margin: 6px 15px 0 0;
+  line-height: 1em;
+}
+#NavbarWrapper .navbar-toggle.menu-toggle {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+#NavbarWrapper .superscript {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  font-size: 10px;
+  line-height: 13px;
+  padding: 0 3px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+  #NavbarWrapper .navbar-collapse {
+    padding-right: 0;
+  }
+  #NavbarWrapper .superscript {
+    position: static;
+    float: right;
+    font-size: 12px;
+    line-height: 17px;
+  }
+}
+#Logo {
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 29px;
+}
+/*===========================================================*/
+#MenuWrapper {
+  padding-top: 41px;
+  width: 160px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 1000;
+  -webkit-transition: width 0.5s;
+  -moz-transition: width 0.5s;
+  -ms-transition: width 0.5s;
+  -o-transition: width 0.5s;
+  transition: width 0.5s;
+}
+#MenuWrapper:hover {
+  overflow-y: auto;
+}
+#MenuContent {
+  padding: 10px 0 50px 0;
+  min-height: 100%;
+}
+#MenuFooter {
+  position: relative;
+  margin-top: -1px;
+  height: 1px;
+}
+#MenuFooterWidget {
+  position: absolute;
+  bottom: 0;
+  padding: 8px;
+  width: 160px;
+  color: #777;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-text-shadow: 0 1px 2px #fff;
+  -moz-text-shadow: 0 1px 2px #fff;
+  -ms-text-shadow: 0 1px 2px #fff;
+  -o-text-shadow: 0 1px 2px #fff;
+  text-shadow: 0 1px 2px #fff;
+}
+#MenuFooterWidget a {
+  color: #777;
+}
+#MenuFooterWidget img {
+  max-height: 20px;
+}
+#MenuFilter {
+  margin: 5px 10px;
+}
+#MenuFilter .input-group-addon {
+  padding: 4px 6px;
+}
+#MenuList li {
+  width: 160px;
+}
+#MenuList a {
+  padding-right: 0;
+}
+#MenuList .sidebar-sub-list .sidebar-item {
+  padding-left: 40px;
+}
+#Breadcrumb {
+  -webkit-transition: margin 0.5s;
+  -moz-transition: margin 0.5s;
+  -ms-transition: margin 0.5s;
+  -o-transition: margin 0.5s;
+  transition: margin 0.5s;
+}
+#ContainerWrapper {
+  font-family: Consolas, "Helvetica Neue", Helvetica, Arial, "Microsoft JhengHei", "微軟正黑體", "微软雅黑", "メイリオ", "맑은 고딕", sans-serif;
+  width: 100%;
+  padding: 18px;
+  position: relative;
+  -webkit-transition: margin 0.5s;
+  -moz-transition: margin 0.5s;
+  -ms-transition: margin 0.5s;
+  -o-transition: margin 0.5s;
+  transition: margin 0.5s;
+}
+#GotoTop {
+  position: fixed;
+  right: 20px;
+  bottom: 10px;
+  display: block;
+  padding: 7px;
+  border-radius: 100px;
+  background: #333;
+  color: #fff;
+  opacity: 0.4;
+}
+#GotoTop:hover {
+  opacity: 0.8;
+}
+/*===========================================================*/
+#MainLayout.menu-toggle {
+  padding-left: 0;
+}
+#MainLayout.menu-toggle #MenuWrapper {
+  width: 0px;
+}
+#MainLayout.menu-toggle.init {
+  -webkit-transition: padding 0s;
+  -moz-transition: padding 0s;
+  -ms-transition: padding 0s;
+  -o-transition: padding 0s;
+  transition: padding 0s;
+}
+#MainLayout.menu-toggle.init #MenuWrapper {
+  -webkit-transition: width 0s;
+  -moz-transition: width 0s;
+  -ms-transition: width 0s;
+  -o-transition: width 0s;
+  transition: width 0s;
+}
+#MainLayout.menu-toggle.init #Breadcrumb,
+#MainLayout.menu-toggle.init #ContainerWrapper {
+  -webkit-transition: margin 0s;
+  -moz-transition: margin 0s;
+  -ms-transition: margin 0s;
+  -o-transition: margin 0s;
+  transition: margin 0s;
+}
+@media (max-width: 768px) {
+  #MainLayout {
+    padding-left: 0;
+    /*overflow-x: hidden;*/
+  }
+  #MenuWrapper {
+    width: 0px;
+  }
+  #MainLayout.menu-toggle #MenuWrapper {
+    width: 160px;
+  }
+  #MainLayout.menu-toggle #Breadcrumb,
+  #MainLayout.menu-toggle #ContainerWrapper {
+    margin: 0 -160px 0 160px;
+  }
+}
+@media print {
+  * {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+  }
+  #MainLayout {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+  }
+  #MenuWrapper {
+    display: none !important;
+  }
+  #ContainerWrapper {
+    background: #fff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+}
+/*############################################################################################*/
+#MainLayout .modal-backdrop {
+  background-color: #fff;
+  opacity: 0.1;
+}
+#MainLayout .modal-header {
+  padding: 10px 15px;
+}
+#MainLayout .modal-footer {
+  padding: 9px 20px 10px;
+}
+#DialogWidget {
+  overflow: hidden;
+  /* 拖移時的遮蓋 */
+}
+#DialogWidget .modal-dismiss {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  z-index: 10;
+  cursor: pointer;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=60);
+  filter: alpha(opacity=60);
+  -webkit-opacity: 0.6;
+  -khtml-opacity: 0.6;
+  -moz-opacity: 0.6;
+  -o-opacity: 0.6;
+  opacity: 0.6;
+}
+#DialogWidget .modal-dismiss:hover {
+  color: #A94442;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=99);
+  filter: alpha(opacity=99);
+  -webkit-opacity: 0.99;
+  -khtml-opacity: 0.99;
+  -moz-opacity: 0.99;
+  -o-opacity: 0.99;
+  opacity: 0.99;
+}
+#DialogWidget .modal-dismiss:hover .fa-circle {
+  text-shadow: 0 0 3px #A94442;
+}
+#DialogWidget .modal-dialog {
+  -webkit-transition: left 0.3s, width 0.3s, height 0.3s;
+  -moz-transition: left 0.3s, width 0.3s, height 0.3s;
+  -ms-transition: left 0.3s, width 0.3s, height 0.3s;
+  -o-transition: left 0.3s, width 0.3s, height 0.3s;
+  transition: left 0.3s, width 0.3s, height 0.3s;
+}
+#DialogWidget .modal-content {
+  height: 100%;
+}
+#DialogWidget .fa-spinner {
+  margin: -25px 0 0 -25px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 3em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 7;
+}
+#DialogWidget iframe {
+  background: none;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8;
+}
+#DialogWidget i.top-handle,
+#DialogWidget i.right-handle,
+#DialogWidget i.left-handle,
+#DialogWidget i.bottom-handle,
+#DialogWidget i.right-bottom-handle,
+#DialogWidget i.left-bottom-handle {
+  display: block;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  left: -10px;
+  bottom: -10px;
+  z-index: 1;
+}
+#DialogWidget i.top-handle {
+  bottom: auto;
+  height: 20px;
+  z-index: 2;
+}
+#DialogWidget i.right-handle {
+  left: auto;
+  width: 15px;
+}
+#DialogWidget i.left-handle {
+  right: auto;
+  width: 15px;
+}
+#DialogWidget i.bottom-handle {
+  top: auto;
+  height: 15px;
+}
+#DialogWidget i.right-bottom-handle,
+#DialogWidget i.left-bottom-handle {
+  top: auto;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+}
+#DialogWidget i.right-bottom-handle {
+  left: auto;
+}
+#DialogWidget i.left-bottom-handle {
+  right: auto;
+}
+#DialogWidget .top-handle {
+  cursor: move;
+}
+#DialogWidget .right-handle {
+  cursor: e-resize;
+}
+#DialogWidget .left-handle {
+  cursor: w-resize;
+}
+#DialogWidget .bottom-handle {
+  cursor: s-resize;
+}
+#DialogWidget .right-bottom-handle {
+  cursor: se-resize;
+}
+#DialogWidget .left-bottom-handle {
+  cursor: sw-resize;
+}
+#DialogWidget #DragMask.top-handle,
+#DialogWidget #DragMask.right-handle,
+#DialogWidget #DragMask.left-handle,
+#DialogWidget #DragMask.bottom-handle,
+#DialogWidget #DragMask.right-bottom-handle,
+#DialogWidget #DragMask.left-bottom-handle {
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3000;
+  opacity: 0.01;
+}
+#DialogLayout {
+  background: #fff;
+}
+#DialogLayout .modal-header,
+#DialogLayout .modal-body,
+#DialogLayout .modal-footer {
+  background: #fff;
+  position: fixed;
+  right: 0;
+  left: 0;
+}
+#DialogLayout .modal-header {
+  padding: 10px 15px;
+  top: 0;
+  z-index: 20;
+}
+#DialogLayout .modal-body {
+  top: 0;
+  bottom: 50px;
+  max-height: none;
+  z-index: 10;
+}
+#DialogLayout .modal-body.auto {
+  overflow: auto;
+}
+#DialogLayout .modal-footer {
+  padding: 9px 20px 10px;
+  bottom: 0;
+  z-index: 20;
+}
+#DialogLayout .modal-footer .pagination {
+  margin: 0;
+}
+#DialogLayout .modal-header + .modal-body {
+  top: 47px;
+}
+#DialogLayout .modal-body:last-child {
+  bottom: 0;
+}
+#DialogLayout .modal-close {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  line-height: 1em;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0;
+  z-index: 9999;
+  zoom: 1;
+  color: #fff;
+  background: #333;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -ms-border-radius: 15px;
+  -o-border-radius: 15px;
+  border-radius: 15px;
+  -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=60);
+  filter: alpha(opacity=60);
+  -webkit-opacity: 0.6;
+  -khtml-opacity: 0.6;
+  -moz-opacity: 0.6;
+  -o-opacity: 0.6;
+  opacity: 0.6;
+}
+#DialogLayout .modal-close:hover {
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=99);
+  filter: alpha(opacity=99);
+  -webkit-opacity: 0.99;
+  -khtml-opacity: 0.99;
+  -moz-opacity: 0.99;
+  -o-opacity: 0.99;
+  opacity: 0.99;
+}
+/*############################################################################################*/
+/* status msg
+-------------------------------------------------- */
+#StatusMsg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  overflow: visible;
+  z-index: 9999;
+  text-align: center;
+}
+#StatusMsg .alert {
+  display: inline-block !important;
+  margin: 0 auto;
+  max-width: 300px;
+  padding: 5px 15px;
+  line-height: 1em;
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+#StatusMsg .alert .fa {
+  margin: 0 5px 0 -10px;
+}
+#MainLayout #StatusMsg {
+  top: 45px;
+}

@@ -1,0 +1,98 @@
+
+
+/* (where-builder-picker) 
+-------------------------------------------------- */
+
+table.where-builder-picker {
+	border: 1px solid #ddd;
+	margin: -5px 0;
+
+	> tbody > tr > td {
+		padding: 4px 2px;
+		vertical-align: top;
+		
+		&:first-child {
+			padding-left: 6px;
+		} 
+		&:last-child {
+			padding-right: 6px;
+		} 
+	} 
+	.add_btn {
+		line-height: 30px;
+	}
+	.column select {
+		max-width: 150px;
+		min-width: 70px;
+	} 
+	.operator select {
+		width: 60px;
+		font-weight: bold;
+	} 
+	.condition {
+		width: 240px;
+
+		.form-control { 
+			width: 100%; 
+		}		
+		.input-group {
+			float: none;
+			width: auto;
+		}
+		.input-group-addon {
+			border-left: 0 none;
+			border-right: 0 none;
+		}
+
+		textarea { 
+			font-size: 14px;
+			min-height: 60px;
+			max-height: 180px;
+		}
+		.options {
+			border-radius: 3px;
+			padding: 3px 0 3px 8px;
+			font-size: 14px;
+			line-height: 1.5;
+			height: auto;
+			max-height: 180px;
+			overflow: auto;
+
+			.checkbox-inline { 
+				display: block;
+				margin: 0 -6px;
+				padding: 2px 0 2px 26px;
+			}
+			.checkbox-inline:hover { 
+				background: #eee;
+			}
+
+		}
+	} 
+	.delete_btn {
+		padding-left:10px;
+	}
+
+} 
+
+
+	
+@media (max-width: 510px) {
+	
+	table.where-builder-picker { 
+
+		.column select {
+			padding: 0 2px;
+		}  
+
+		.operator select {
+			width: 40px;
+			padding: 0 2px;
+		}  
+		
+		.delete_btn {
+			padding-left:4px;
+		}
+	} 
+}
+	

@@ -1,0 +1,142 @@
+﻿@model UserDomain
+
+
+@{
+    bool isCreate = this.IsRouteAction("Create");
+
+    ViewBag.Title = isCreate ? "新增使用者" : "編輯使用者-" + Model.Account + " " + Model.UserName;
+
+    List<string> holdActList = ViewBag.HoldActList;
+}
+
+@section Styles {
+}
+
+
+@section Scripts {
+}
+
+
+
+<div class="page-header">
+	<h1>@ViewBag.Title</h1>
+</div>
+
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+	action = "",
+	@class = "form-horizontal form-sm",
+	ext_one_submit = "",
+	ext_exit_alert = "資料尚未儲存，確定要離開？",
+}))
+{
+	@Html.HiddenFor(m => m.UserId)
+
+	<div class="well btn-toolbar hidden-print" ext-scroll-follow="">
+		<div class="toolbar-left">
+			<a class="btn btn-default btn-sm" href="@Html.BackUrl(Url.Action("List"))"><i class="fa fa-reply fa-lg"></i> 回列表</a>
+
+			<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save fa-lg"></i> 儲存</button>
+
+			@if (!isCreate && User.AnyAct(ACT.STK_UserActSetting))
+			{
+				<a class="btn btn-default btn-sm" href="@Url.Action("ActEdit", new { Model.UserId })">
+					<i class="fa fa-pencil fa-lg"></i> 個人權限
+				</a>
+			}
+
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body row">
+			<div class="form-group col-xs-6">
+				@Html.BsLabelFor(m => m.Account, new { @class = "col-sm-4 required" })
+				<div class="col-sm-8">
+					@Html.BsTextBoxFor(m => m.Account, new 
+					{
+						data_val_remote = "帳號已經存在!",
+						data_val_remote_additionalfields = "*.Account",
+						data_val_remote_url = Url.Action("IsAccountNotExist"),
+						editable = isCreate
+					})
+					<span class="form-tip">@Html.ValidationMessageFor(m => m.Account)</span>
+				</div>
+			</div>
+
+			<div class="form-group col-xs-6">
+				@Html.BsLabelFor(m => m.UseStatus, new { @class = "col-sm-4 required" })
+				<div class="col-sm-8">
+					@Html.BsEnumRadioListFor(m => m.UseStatus, new { ext_selected_mark = "label => selected" })
+				</div>
+			</div>
+
+			<div class="form-group col-xs-6">
+				@Html.BsLabelFor(m => m.UserName, new { @class = "col-sm-4 required" })
+				<div class="col-sm-8">
+					@Html.BsTextBoxFor(m => m.UserName)
+					<span class="form-tip">@Html.ValidationMessageFor(m => m.UserName)</span>
+				</div>
+			</div>
+
+			<div class="form-group col-xs-6">
+				@Html.BsLabelFor(m => m.Email, new { @class = "col-sm-4" })
+				<div class="col-sm-8">
+					@Html.BsTextBoxFor(m => m.Email)
+					<span class="form-tip">@Html.ValidationMessageFor(m => m.Email)</span>
+				</div>
+			</div>
+			<div class="form-group col-xs-6">
+				@Html.BsLabelFor(m => m.Department, new { @class = "col-sm-4 required" })
+				<div class="col-sm-8">
+					@Html.BsTextBoxFor(m => m.Department)
+				</div>
+			</div>
+			<div class="form-group col-xs-6">
+				@Html.BsLabelFor(m => m.UserTitle, new { @class = "col-sm-4" })
+				<div class="col-sm-8">
+					@Html.BsTextBoxFor(m => m.UserTitle)
+				</div>
+			</div>
+
+			<div class="form-group col-xs-6">
+				@Html.BsLabelFor(m => m.ExtensionNum, new { @class = "col-sm-4" })
+				<div class="col-sm-8">
+					@Html.BsTextBoxFor(m => m.ExtensionNum)
+				</div>
+			</div>
+
+
+			<div class="form-group col-xs-12">
+				@Html.BsLabelFor(m => m.RoleIds, new { @class = "col-sm-2" })
+				<div class="col-sm-10">
+					@Html.BsCheckboxListFor(m => m.RoleIds, Items.RoleName, new
+					{
+						@class = "column-width-200",
+						ext_selected_mark = "label => selected"
+					})
+				</div>
+			</div>
+
+			<div class="form-group col-xs-12">
+				<label class="control-label col-sm-2">擁有權限</label>
+				<div class="col-sm-10">
+					<div class="form-control-static mark-tag">
+						@Html.ShowItem(holdActList, OrionUtils.EnumToDictionary<ACT>())
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group col-xs-12">
+				@Html.BsLabelFor(m => m.RemarkText, new { @class = "col-sm-2" })
+				<div class="col-sm-10">
+					@Html.BsTextAreaFor(m => m.RemarkText)
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+}

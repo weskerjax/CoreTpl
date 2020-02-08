@@ -1,0 +1,15 @@
+<configuration>
+	<system.web>
+		<customErrors mode="RemoteOnly" redirectMode="ResponseRewrite" defaultRedirect="~/Error/ServerError">
+			<error statusCode="403" redirect="~/Error/Forbidden" />
+			<error statusCode="404" redirect="~/Error/NotFound" />
+			<error statusCode="500" redirect="~/Error/ServerError" />
+		</customErrors>
+	</system.web>
+	<system.webServer>
+		<modules>
+			<add name="HttpErrorHandler" type="Orion.Mvc.HttpErrorHandler" />
+		</modules>
+	</system.webServer>
+
+</configuration>

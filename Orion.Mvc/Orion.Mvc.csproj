@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="RouteConstraint\**" />
+    <Content Remove="RouteConstraint\**" />
+    <EmbeddedResource Remove="RouteConstraint\**" />
+    <None Remove="RouteConstraint\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Remove="Filters\JsonNetActionFilter.cs" />
+    <Compile Remove="Filters\JsonNetResult.cs" />
+    <Compile Remove="HttpErrorHandler.cs" />
+    <Compile Remove="ModelBinder\DateTimeOffsetModelBinder.cs" />
+    <Compile Remove="ModelBinder\StringTrimModelBinder.cs" />
+    <Compile Remove="SessionStateControllerFactory.cs" />
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <None Remove="UI\menus.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="UI\menus.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orion.API\Orion.API.csproj" />
+  </ItemGroup>
+
+</Project>

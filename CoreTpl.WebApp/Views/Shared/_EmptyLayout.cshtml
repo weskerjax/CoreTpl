@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<partial name="_HeadMeta" />
+
+	<title>@ViewBag.Title | @Items.TplConfig.Title</title>
+
+    <partial name="_Styles" />
+	@RenderSection("Styles", required: false)
+
+    <partial name="_Scripts" />
+</head>
+<body id="EmptyLayout">
+	@RenderBody()
+	@RenderSection("Scripts", required: false)
+</body>
+</html>

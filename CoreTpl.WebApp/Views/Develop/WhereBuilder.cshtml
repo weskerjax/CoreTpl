@@ -1,0 +1,63 @@
+﻿
+@{
+	ViewBag.Title = "WhereBuilder";
+}
+
+
+
+@section Scripts {
+<script type="text/javascript">
+
+	$('#where-builder').whereBuilder({
+		'tntr': { 'type': 'string', 'label': 'tntr-課別' },
+		'gntr': { 'type': 'string', 'label': 'gntr-組別' },
+		'car_date': { 'type': 'date', 'label': 'car_date-交車/借用日' },
+		'maint_cnt': { 'type': 'number', 'label': 'maint_cnt-保養次數' },
+	});
+</script>
+}
+
+
+
+
+
+<partial name="_SampleTab" />
+
+<div class="page-header">
+	<h1>@ViewBag.Title<small></small></h1>
+</div>
+
+
+<form class="well btn-toolbar" action="">
+	<div class="toolbar-left">
+		<button type="button" class="btn btn-success btn-sm"><i class="fa fa-plus fa-lg"></i> 新增</button>
+	</div>
+
+	<div id="where-builder" class="toolbar-left">
+	</div>
+
+	<div class="toolbar-left">
+		<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search fa-lg"></i> 搜尋</button>
+	</div>
+</form>
+
+
+
+<form class="well btn-toolbar">
+	<div class="toolbar-left">
+		<button type="button" class="btn btn-success btn-sm"><i class="fa fa-plus fa-lg"></i> 新增</button>
+	</div>
+
+	<div class="toolbar-left">
+		<select class="where-builder hidden">
+			<option value="tntr" type="upper">tntr-課別</option>
+			<option value="gntr" type="string">gntr-組別</option>
+			<option value="car_date" type="date">car_date-交車/借用日</option>
+			<option value="maint_cnt" type="number">maint_cnt-保養次數</option>
+		</select>
+	</div>
+
+	<div class="toolbar-left">
+		<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-search fa-lg"></i> 搜尋</button>
+	</div>
+</form>

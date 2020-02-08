@@ -1,0 +1,85 @@
+﻿@model UserActViewModel
+
+
+@{
+
+	ViewBag.Title = "個人權限-" + Model.Account + " " + Model.UserName;
+
+	Dictionary<string, string> actItems = OrionUtils.EnumToDictionary<ACT>();
+
+}
+
+@section Styles {
+<style type="text/css">
+	#RoleMark {
+		margin-top: 2px;
+		padding: 2px 10px;
+		border-radius: 3px;
+		display:inline-block;
+	}
+</style>
+}
+
+
+@section Scripts {
+<script type="text/javascript">
+var roleActList = @(Model.RoleActList.ToJsonRaw());
+
+jQuery(function($){
+	$(':checkbox[name=ActList]')
+		.filter(function(){ return ~$.inArray(this.value, roleActList); })
+		.parent().addClass('bg-info');
+});
+</script>
+}
+
+
+
+<div class="page-header">
+	<h1>@ViewBag.Title</h1>
+</div>
+
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+	action = "",
+	@class = "form-horizontal",
+	ext_one_submit = "",
+	ext_exit_alert = "資料尚未儲存，確定要離開？",
+}))
+{
+	@Html.HiddenFor(m => m.UserId)
+	@Html.HiddenFor(m => m.Account)
+	@Html.HiddenFor(m => m.UserName)
+
+	for (int i = 0; i < Model.RoleActList.Count; i++)
+	{
+		@Html.HiddenFor(m => m.RoleActList[i])
+	}
+
+
+	<div class="well btn-toolbar hidden-print" ext-scroll-follow="">
+		<div class="toolbar-left">
+			<a class="btn btn-default btn-sm" href="@Url.Action("Edit", new { Model.UserId })"><i class="fa fa-reply fa-lg"></i> 返回</a>
+			<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save fa-lg"></i> 儲存</button>
+		</div>
+		<div class="toolbar-left">
+			<span id="RoleMark" class="bg-info">角色權限</span>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body row">
+			<div class="form-group col-xs-12">
+				@Html.BsLabelFor(m => m.ActList, "允許權限", new { @class = "col-sm-2" })
+				<div class="col-sm-10">
+					@Html.BsCheckboxListFor(m => m.ActList, actItems, new { 
+						@class = "column-width-220", 
+						ext_selected_mark = "label => selected" 
+					})
+				</div>
+			</div>
+		</div>
+	</div>
+}

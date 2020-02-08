@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Dialog";
+}
+
+
+@section Styles {
+}
+
+
+@section Scripts {
+<script type="text/javascript">
+    Dialog.on('ok', function (data) {
+        $('#show').html(JSON.stringify(data));
+    });
+</script>
+}
+
+
+
+<partial name="_SampleTab" />
+
+
+<div class="form-horizontal">
+    <div id="show" class="alert alert-info"></div>
+</div>
+
+<div class="control-group form-inline">
+    <a class="btn" href="#" data-toggle="modal" data-backdrop="static" data-target="#myModal">Org Modal</a>
+
+    <a class="btn" href="dialogShow" target="dialog">Show</a>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+
+                <table class="sexy-table">
+                    <tr class="versionTableRow recommended">
+                        <td>38142</td>
+                        <td>Saturday, August 11 2012</td>
+                    </tr>
+                    <tr class="versionTableRow ">
+                        <td>14329</td>
+                        <td>Friday, June 01 2012</td>
+                    </tr>
+                    <tr class="versionTableRow ">
+                        <td>53753</td>
+                        <td>Thursday, February 16 2012</td>
+                    </tr>
+                    <tr class="versionTableRow ">
+                        <td>7907</td>
+                        <td>Wednesday, September 14 2011</td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+

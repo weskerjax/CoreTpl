@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<elmah>
+  <errorFilter>
+    <test>
+      <or>        
+        <equal binding="HttpStatusCode" value="404" type="Int32" />
+				<is-type-compatible binding="BaseException" type="Orion.API.OrionException, Orion.API" />
+      </or>
+    </test>
+  </errorFilter>
+</elmah>

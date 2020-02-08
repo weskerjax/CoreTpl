@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<partial name="_HeadMeta" />
+
+	<title>@ViewBag.Title</title>
+
+	<partial name="_Styles" />
+	@RenderSection("Styles", required: false)
+
+	<partial name="_Scripts" />
+</head>
+<body id="DialogLayout">
+
+	<partial name="_StatusMsg" />
+	
+	<div>@RenderBody()</div>
+
+	@RenderSection("Scripts", required: false)
+
+	@if (TempData.ContainsKey("StatusSuccess"))
+	{
+		<script type="text/javascript">
+			Dialog.trigger('change');
+			Dialog.close(300);
+		</script>
+	}
+</body>
+</html>

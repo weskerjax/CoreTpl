@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)http://skilldrick.co.uk/tmpl/ -->
+<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css"></style>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>jQuery.tmpl() presentation</title>
+  <meta name="description" content="A presentation on jQuery.tmpl, using jQuery.tmpl">
+  <meta name="author" content="Nick Morgan (Skilldrick)">
+  
+  <style type="text/css">
+	pre code {
+	    background: none repeat scroll 0 0 #f8f8ff;
+	    color: #000;
+	    display: block;
+	    padding: 0.5em;
+	}
+	pre .comment, pre .template_comment, pre .diff .header, pre .javadoc {
+	    color: #998;
+	    font-style: italic;
+	}
+	pre .keyword, pre .css .rule .keyword, pre .winutils, pre .javascript .title, pre .lisp .title, pre .subst {
+	    color: #000;
+	    font-weight: bold;
+	}
+	pre .number, pre .hexcolor {
+	    color: #40a070;
+	}
+	pre .string, pre .tag .value, pre .phpdoc, pre .tex .formula {
+	    color: #d14;
+	}
+	pre .title, pre .id {
+	    color: #900;
+	    font-weight: bold;
+	}
+	pre .javascript .title, pre .lisp .title, pre .subst {
+	    font-weight: normal;
+	}
+	pre .class .title, pre .tex .command {
+	    color: #458;
+	    font-weight: bold;
+	}
+	pre .tag, pre .css .keyword, pre .html .keyword, pre .tag .title, pre .django .tag .keyword {
+	    color: #000080;
+	    font-weight: normal;
+	}
+	pre .attribute, pre .variable, pre .instancevar, pre .lisp .body {
+	    color: #008080;
+	}
+	pre .regexp {
+	    color: #009926;
+	}
+	pre .class {
+	    color: #458;
+	    font-weight: bold;
+	}
+	pre .symbol, pre .ruby .symbol .string, pre .ruby .symbol .keyword, pre .ruby .symbol .keymethods, pre .lisp .keyword, pre .tex .special {
+	    color: #990073;
+	}
+	pre .builtin, pre .built_in, pre .lisp .title {
+	    color: #0086b3;
+	}
+	pre .preprocessor, pre .pi, pre .doctype, pre .shebang, pre .cdata {
+	    color: #999;
+	    font-weight: bold;
+	}
+	pre .deletion {
+	    background: none repeat scroll 0 0 #fdd;
+	}
+	pre .addition {
+	    background: none repeat scroll 0 0 #dfd;
+	}
+	pre .diff .change {
+	    background: none repeat scroll 0 0 #0086b3;
+	}
+	pre .chunk {
+	    color: #aaa;
+	}
+	pre .tex .formula {
+	    opacity: 0.5;
+	}
+  </style>
+</head>
+
+<body lang="en" style="margin:10px auto; width:620px;">
+
+  <div id="container">
+    <header>
+
+    </header>
+
+    
+    <div id="main" role="main">
+
+    <div class="slide current" id="slide-slide1">       <h1 class="main">jQuery.tmpl()</h1><h2 class="main">No More String Concatenation</h2>     </div><div class="slide next" id="slide-slide2">       <h1>Templating – why?</h1><ul>       <li>Avoid PHP-style mix of logic, content and presentation</li><li>Keep content out of the layout</li><li>Separation of concerns</li>     </ul>     </div><div class="slide next" id="slide-slide3">       <h1>Why client-side templating?</h1><ul>       <li>Keep UI responsive</li><li>Sending HTML updates via Ajax is inefficient</li><li>Faster computers and interpreters</li><li>Makes sense to do more work in the browser</li>     </ul>     </div><div class="slide next" id="slide-slide4">       <h1>Why jQuery.tmpl()?</h1><ul>       <li>jQuery has the biggest market share of any JS library at the moment</li><li>jQuery.tmpl() is its official templating plugin</li><li>Developed by Microsoft, under MIT/GPL licence</li>     </ul>     </div><div class="slide next" id="slide-slide5">       <h1>How does it work? (1)</h1><p>Start with some data:</p><pre class="large"><code class="javascript" data-result="[object Object]"><span class="keyword">var</span> person = { name: <span class="string">'Dave'</span> };</code></pre>     </div><div class="slide next" id="slide-slide6">       <h1>How does it work? (2)</h1><p>Make a template for that data:</p><pre class="large"><code class="html" data-result="[object Object]"><span class="tag">&lt;<span class="keyword">script</span> <span class="attribute">id</span>=<span class="value">'my-first-template'</span>
+  <span class="attribute">type</span>=<span class="value">'text/x-jquery-tmpl'</span>&gt;</span><span class="javascript">
+  &lt;p&gt;Hello ${name}!&lt;/p&gt;
+</span><span class="tag">&lt;/<span class="title"><span class="keyword">script</span></span>&gt;</span></code></pre>     </div><div class="slide next" id="slide-slide7">       <h1>How does it work? (3)</h1><p>Combine the data with the template and add to the page:</p><pre class="large"><code class="javascript" data-result="[object Object]">$(<span class="string">'#my-first-template'</span>)
+  .tmpl(person).appendTo(<span class="string">'body'</span>);</code></pre>     </div><div class="slide next" id="slide-slide8">       <h1>Template tags</h1><ul>       <li>${} or {{=}}</li><li>{{html}}</li><li>{{if}} / {{else}}</li><li>{{each}}</li><li>{{tmpl}}</li><li>{{wrap}}</li>     </ul>     </div><div class="slide next" id="slide-slide9">       <h1>${}</h1><p>Used for inserting data on the page.</p><pre class=""><code class="javascript" data-result="[object Object]"><span class="comment">//data:</span>
+<span class="keyword">var</span> data = { name: <span class="string">'Dave'</span>,
+  cat: { name: <span class="string">'Sparky'</span> } };</code></pre><pre class=""><code class="html" data-result="[object Object]"><span class="comment">&lt;!--template:--&gt;</span>
+<span class="tag">&lt;<span class="title"><span class="keyword">div</span></span>&gt;</span>
+  <span class="tag">&lt;<span class="title"><span class="keyword">p</span></span>&gt;</span>My name is ${name} and my
+  cat is called ${cat.name}<span class="tag">&lt;/<span class="title"><span class="keyword">p</span></span>&gt;</span>
+<span class="tag">&lt;/<span class="title"><span class="keyword">div</span></span>&gt;</span></code></pre><pre class=""><code class="html" data-result="[object Object]"><span class="comment">&lt;!--alternative syntax:--&gt;</span>
+<span class="tag">&lt;<span class="title"><span class="keyword">p</span></span>&gt;</span>Welcome back {{= name}}!<span class="tag">&lt;/<span class="title"><span class="keyword">p</span></span>&gt;</span></code></pre>     </div><div class="slide next" id="slide-slide10">       <h1>${}</h1><p>It is possible call simple functions and methods in ${}.</p><pre class=""><code class="javascript" data-result="[object Object]"><span class="comment">//custom function:</span>
+<span class="function"><span class="keyword">function</span> <span class="title">fun</span><span class="params">(str)</span> {</span> <span class="keyword">return</span> str + <span class="string">'y'</span>; }</code></pre><pre class=""><code class="html" data-result="[object Object]"><span class="comment">&lt;!--template:--&gt;</span>
+<span class="tag">&lt;<span class="title"><span class="keyword">div</span></span>&gt;</span>
+  <span class="tag">&lt;<span class="title"><span class="keyword">p</span></span>&gt;</span>I SAID MY NAME IS ${name.toUpperCase()}!<span class="tag">&lt;/<span class="title"><span class="keyword">p</span></span>&gt;</span>
+  <span class="tag">&lt;<span class="title"><span class="keyword">p</span></span>&gt;</span>But you can call me ${fun(name)}<span class="tag">&lt;/<span class="title"><span class="keyword">p</span></span>&gt;</span>
+<span class="tag">&lt;/<span class="title"><span class="keyword">div</span></span>&gt;</span></code></pre>     </div><div class="slide next" id="slide-slide11">       <h1>{{html}}</h1><p>${} escapes HTML, but {{html}} passes it through untouched.</p><pre class=""><code class="javascript" data-result="[object Object]"><span class="comment">//data:</span>
+{ greeting:
+  <span class="string">'Hello! How &lt;em&gt;nice&lt;/em&gt; to see you!'</span>
+};</code></pre><pre class=""><code class="html" data-result="[object Object]"><span class="comment">&lt;!--template:--&gt;</span>
+<span class="tag">&lt;<span class="title"><span class="keyword">p</span></span>&gt;</span>{{html greeting}}<span class="tag">&lt;/<span class="title"><span class="keyword">p</span></span>&gt;</span></code></pre>     </div><div class="slide next" id="slide-slide12">       <h1>{{if}} / {{else}}</h1><p>Used for conditional execution of template code.</p><pre class=""><code class="javascript" data-result="[object Object]"><span class="comment">//data:</span>
+<span class="keyword">var</span> data = { name: <span class="string">'Dave'</span>, important: <span class="literal">true</span> };</code></pre><pre class=""><code class="html" data-result="[object Object]"><span class="comment">&lt;!--template:--&gt;</span>
+{{if important}}
+  <span class="tag">&lt;<span class="title"><span class="keyword">p</span></span>&gt;</span>It's our most valued customer, ${name}!<span class="tag">&lt;/<span class="title"><span class="keyword">p</span></span>&gt;</span>
+{{else}}
+  <span class="tag">&lt;<span class="title"><span class="keyword">p</span></span>&gt;</span>Hi there ${name}.<span class="tag">&lt;/<span class="title"><span class="keyword">p</span></span>&gt;</span>
+{{/if}}</code></pre>     </div><div class="slide next" id="slide-slide13">       <h1>{{each}}</h1><p>Used to iterate over an array within a template.</p><pre class=""><code class="javascript" data-result="[object Object]"><span class="comment">//data:</span>
+<span class="keyword">var</span> data = { numbers: [<span class="number">4</span>, <span class="number">8</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">23</span>, <span class="number">42</span>] };</code></pre><pre class=""><code class="html" data-result="[object Object]"><span class="comment">&lt;!--template:--&gt;</span>
+{{each numbers}}
+  <span class="tag">&lt;<span class="title"><span class="keyword">p</span></span>&gt;</span>${$index + 1}. Please enter the number ${$value} in your terminal.<span class="tag">&lt;/<span class="title"><span class="keyword">p</span></span>&gt;</span>
+{{/each}}</code></pre>     </div><div class="slide next" id="slide-slide14">       <h1>{{tmpl}}</h1><p>Used to render sub-templates. Can be passed a single item or an array.</p><pre class=""><code class="javascript" data-result="[object Object]"><span class="keyword">var</span> data = { name: <span class="string">'Dave'</span>,
+  cats: [<span class="string">'Mittens'</span>, <span class="string">'Fluffy'</span>, <span class="string">'Bob'</span>] };
+</code></pre><pre class=""><code class="html" data-result="[object Object]"><span class="tag">&lt;<span class="keyword">script</span> <span class="attribute">id</span>=<span class="value">'inner'</span> <span class="attribute">type</span>=<span class="value">'text/x-jquery-tmpl'</span>&gt;</span><span class="javascript">
+  &lt;p&gt;${$data}&lt;/p&gt;
+</span><span class="tag">&lt;/<span class="title"><span class="keyword">script</span></span>&gt;</span></code></pre><pre class=""><code class="html" data-result="[object Object]"><span class="tag">&lt;<span class="keyword">script</span> <span class="attribute">id</span>=<span class="value">'outer'</span> <span class="attribute">type</span>=<span class="value">'text/x-jquery-tmpl'</span>&gt;</span><span class="javascript">
+  &lt;p&gt;My name is ${name} and these are my cats:&lt;/p&gt;
+  {{tmpl(cats) <span class="string">'#inner'</span>}}
+</span><span class="tag">&lt;/<span class="title"><span class="keyword">script</span></span>&gt;</span></code></pre>     </div><div class="slide next" id="slide-slide15">       <h1>{{wrap}}</h1><pre class="small"><code class="javascript" data-result="[object Object]"><span class="comment">//data</span>
+<span class="keyword">var</span> data = { name: <span class="string">'Dave'</span> };</code></pre><pre class="small"><code class="html" data-result="[object Object]"><span class="comment">&lt;!--wrapper template--&gt;</span>
+<span class="tag">&lt;<span class="keyword">script</span> <span class="attribute">id</span>=<span class="value">'wrapper'</span> <span class="attribute">type</span>=<span class="value">'text/x-jquery-tmpl'</span>&gt;</span><span class="javascript">
+  &lt;div class=<span class="string">'person-wrapper'</span>&gt;
+    {{html $item.html()}}
+  &lt;/div&gt;
+</span><span class="tag">&lt;/<span class="title"><span class="keyword">script</span></span>&gt;</span></code></pre><pre class="small"><code class="html" data-result="[object Object]"><span class="comment">&lt;!--wrapped template--&gt;</span>
+<span class="tag">&lt;<span class="keyword">script</span> <span class="attribute">id</span>=<span class="value">'wrapped'</span> <span class="attribute">type</span>=<span class="value">'text/x-jquery-tmpl'</span>&gt;</span><span class="javascript">
+  {{wrap <span class="string">'#wrapper'</span>}}
+    &lt;p&gt;${name}&lt;/p&gt;
+  {{/wrap}}
+</span><span class="tag">&lt;/<span class="title"><span class="keyword">script</span></span>&gt;</span></code></pre>     </div><div class="slide next" id="slide-slide16">       <h1>Template meta-variables</h1><p>There are some special variables that can be used within templates:</p><ul>       <li>$data: The current data item being processed</li><li>$item: The current template item</li><li>$value: The current value in {{each}}</li><li>$index: The current index in {{each}}</li>     </ul>     </div><div class="slide next" id="slide-slide17">       <h1>The three plugins</h1><p>Each of these is available to be called on a jQuery instance or as a static method – $(selector).tmpl() or $.tmpl()</p><ul>       <li>jQuery.tmpl(): For rendering content in a specified template</li><li>jQuery.tmplItem(): For selecting and manipulating a rendered template item</li><li>jQuery.template(): For compiling a template for later or multiple use</li>     </ul>     </div><div class="slide next" id="slide-slide18">       <h1>Links and credits</h1><ul>       <li>Me: <a href="http://twitter.com/skilldrick">@skilldrick</a> / <a href="http://skilldrick.co.uk/">skilldrick.co.uk</a></li><li><a href="http://api.jquery.com/category/plugins/templates/">jQuery.tmpl() docs</a></li><li><a href="https://github.com/jquery/jquery-tmpl">github repository</a></li><li><a href="http://www.borismoore.com/2010/09/introducing-jquery-templates-1-first.html">Boris Moore’s blog</a> (tmpl() lead developer)</li><li><a href="http://blog.reybango.com/2010/07/09/not-using-jquery-javascript-templates-youre-really-missing-out/">Rey Bango’s blog</a></li><li>Thanks to Rey Bango for advice.</li><li><a href="javascript:location.href = 'view-source:' + location.href;">View source</a> for more examples.</li>     </ul></div></div>
+
+    
+    
+
+  </div> <!--! end of #container -->
+
+</body></html>

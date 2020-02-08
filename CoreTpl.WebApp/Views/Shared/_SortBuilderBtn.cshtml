@@ -1,0 +1,114 @@
+﻿@model SortBuilderBtnModel
+
+<div id="SortBuilderWidget" class="btn-group">
+	<b class="btn btn-default btn-sm dropdown-toggle"  data-toggle="dropdown" title="進階排序">
+		<i class="fa fa-unsorted fa-lg"></i>
+	</b>
+	<div class="dropdown-menu">
+		<table class="table-condensed table-nowrap" style="width: 250px; margin: 0 5px 5px 5px;">
+			<tbody>
+				<tr>
+					<td style="width:1%" title="順序拖移"><i class="fa fa-arrows-v fa-fw cursor-pointer"></i></td>
+					<td><select class="form-control input-sm"><option value="">=請選擇=</option></select></td>
+					<td style="width:1%"><label class="checkbox-inline"><input type="checkbox" value="1" />反排</label></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="clearfix text-right" style="padding:7px 10px">
+			<b class="btn btn-default btn-sm" style="float:none" id="ClearSort"><i class="fa fa-eraser fa-lg"></i> 清除</b>
+			<b class="btn btn-primary btn-sm" style="float:none" id="CommitSort"><i class="fa fa-check fa-lg"></i> 確定</b>
+		</div>
+	</div>
+	
+	@Html.Hidden("orderField")
+	@Html.Hidden("descending")
+</div>
+
+<script type="text/javascript">
+	jQuery(function ($) {
+		var $table = $('#@Model.TargetId');
+
+		var $widget = $('#SortBuilderWidget');
+		var $tbody = $widget.find('tbody');
+
+		/*掃描可以排序的欄位*/
+		$table.find('th a').each(function () {
+			var match = $(this).attr('href').match(/orderField=([^&]+)/i);
+			if (!match) { return; }
+
+			$('<option>', { value: match[1], text: $(this).text() }).appendTo($tbody.find('select'));
+		});
+			
+		var rowTpl = $tbody.find('tr:eq(0)').prop("outerHTML");
+
+
+		/* 還原 */
+		$widget.find('#orderField').val().split(',')
+			.map(function (x) { return $.trim(x) })
+			.filter(function (x) { return x })
+			.reverse().forEach(function (x) {
+				var $row = $(rowTpl).prependTo($tbody);
+				$row.find(':checkbox').prop('checked', x[0] == '-'); 
+				$row.find('select').val(x.replace(/^-+/,'')); 
+			});        
+
+		/*順序拖移*/
+		$tbody.sortable({
+			opacity: 0.7,
+			cursor: 'move',
+			handle: '.fa-arrows-v',
+			axis: 'y',
+		});
+
+		/*自動增加*/
+		$tbody.on('change', 'select', function () {
+			var $this = $(this);
+			if (!$this.val()) { return; }
+			if ($this.closest('tr').next().length) { return; }
+			$tbody.append(rowTpl);
+		});
+
+		/* 只能單選處理 */
+		$tbody.on('focus', 'select', function () {
+			var hideColumn = $tbody.find('select').not(this)
+				.map(function () { return $(this).val() || null; })
+				.map(function () { return '[value="' + this + '"]'; })
+				.toArray().join();
+
+			$(this).find('option').show().filter(hideColumn).hide();
+		});
+
+		/* 清除 */
+		$widget.find('#ClearSort').on('click', function () {
+			$tbody.html(rowTpl);
+		});
+
+		/* 確定 */
+		$widget.find('#CommitSort').on('click', function () {
+			var orderField = $tbody.find('tr').map(function () {
+				var field = $(this).find('select').val(); 
+				var desc = $(this).find(':checkbox').prop('checked') ? '-' : '';
+				return field ? (desc + field) : null;
+			}).toArray().join(',');
+
+			$form = $widget.closest('form');
+			if ($form.length > 0) {
+				$widget.find('#orderField').val(orderField);
+				$widget.find('#descending').val('');
+				$form.submit();
+			} else {
+				var qs = location.search.replace(/(orderField|descending)=[^&]+/i, '');
+				location = (qs || '?') + '&' + $.param({ orderField: orderField });
+			}
+		});
+				
+
+		/*阻擋事件傳遞*/
+		$widget.find('.dropdown-menu').click(function (e) {
+			e.stopImmediatePropagation();
+			e.stopPropagation();
+		});
+
+	});
+</script>

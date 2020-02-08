@@ -1,0 +1,92 @@
+﻿
+@{
+	List<Orion.Mvc.UI.MenuItem> list = Items.MenuAllowList;
+}
+
+@*
+	<div id="MenuFilter" class="input-group input-group-sm">
+		<span class="input-group-addon"><i class="fa fa-search fa-flip-horizontal fa-lg"></i></span>
+		<input type="text" class="form-control" placeholder="尋找" />
+	</div>
+*@
+
+
+<div id="MenuContent">
+	<ul id="MenuList" class="sidebar-list">
+		@foreach (var item in list)
+		{
+			<li class="sidebar-dropdown @(item.IsActive ? "open" : "")">
+				@if (item.HasUrl && !item.HasSubItems)
+				{
+					if (item.CanAccess)
+					{
+						<a class="sidebar-item" href="@Url.Content(item.Url)" target="@item.Target" tabindex="-1">
+							<i class="fa fa-fw @(item.Icon ?? "fa-certificate")"></i>@item.Name
+						</a>
+					}
+					else
+					{
+						<span class="sidebar-item" title="權限不足" tabindex="-1">
+							<i class="fa fa-fw @(item.Icon ?? "fa-certificate")"></i>@item.Name
+						</span>
+					}
+				}
+				else
+				{
+					<span class="sidebar-item @(item.HasSubItems ? "has-sub" : "")">
+						<i class="fa fa-fw @(item.Icon ?? "fa-certificate")"></i>
+						@if (item.CanAccess)
+						{
+							if (item.HasUrl)
+							{
+								<a href="@Url.Content(item.Url)" target="@item.Target" tabindex="-1">@item.Name</a>
+							}
+							else
+							{
+								@item.Name
+							}
+						}
+						else
+						{
+							<span title="權限不足" tabindex="-1">@item.Name</span>
+						}
+					</span>}
+
+
+				@if (item.HasSubItems)
+				{
+					<ul class="list-unstyled sidebar-sub-list">
+						@foreach (var sub in item.SubItems)
+						{
+							<li class="@(sub.IsActive ? "active" : "")">
+								@if (sub.CanAccess)
+								{
+									<a class="sidebar-item" href="@Url.Content(sub.Url)" target="@sub.Target" tabindex="-1">
+										<i class="fa fa-fw @(sub.Icon ?? "fa-angle-double-right")"></i>@sub.Name
+									</a>
+								}
+								else
+								{
+									<span class="sidebar-item muted" tabindex="-1">
+										<i class="fa fa-fw @(sub.Icon ?? "fa-angle-double-right")"></i><span title="權限不足">@sub.Name</span>
+									</span>
+								}
+							</li>
+						}
+					</ul>}
+			</li>}
+	</ul>
+
+</div>
+
+
+
+<div id="MenuFooter">
+	<div id="MenuFooterWidget">
+		<a href="@Url.Action("AboutMe","Home")" target="dialog">
+			
+			XXXXXX
+		</a>
+	</div>
+</div>
+

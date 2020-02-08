@@ -1,0 +1,34 @@
+﻿@model OrderableBtnModel
+
+@{
+	ViewBag.Title = "_OrderableBtn";
+
+
+	var options = new
+	{
+		targetId = "#" + Model.TargetId,
+		showEllipsis = Model.IsEllipsis,
+		columnStatus = this.ColumnStatus(Model.TargetId),
+	};
+
+}
+
+<div class="btn-group">
+	<span class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="選擇欄位順序&amp;顯示">
+		<i class="fa fa-eye-slash fa-lg"></i>
+	</span>
+	<ul class="dropdown-menu fix-height" id="OrderableMenu"></ul>
+</div>
+
+<script type="text/javascript">
+	jQuery(function ($) {
+		$('#OrderableMenu').orderable(@options.ToJsonRaw());
+
+		/*紀錄欄位順序到使用者帳號*/
+		$(document).on('stored.orderable', function(e, targetId, columnStatus){
+			var url = (@Url.Action("SavePreference", "Home").ToJsonRaw());
+			var orderableId = '#Orderable_' + targetId.substr(1);
+			$.post(url, {name: orderableId, value: JSON.stringify(columnStatus)});
+		});
+	});
+</script>

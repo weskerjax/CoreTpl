@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "jQuery Validator";
+}
+
+
+@section Styles {
+}
+
+
+@section Scripts {
+<script type="text/javascript">
+    function myFn(value, element) {
+        return false;
+    }
+</script>
+}
+
+
+
+
+
+
+<partial name="_SampleTab" />
+
+
+<div class="page-header">
+    <h1>@ViewBag.Title<small></small></h1>
+</div>
+
+<form class="form-fixed fixed-help" role="form">
+    <div class="form-group">
+        <label for="exampleInputFile" class="control-label">File input</label>
+        <input type="text" id="inputData" name="inputData" class="form-control input-sm"
+               vd-required="請輸入資料"
+               vd-range="[13, 23] => 範圍請在 {0} 到 {1} 之間"
+               vd-digits="" />
+        <span class="formtip" id="inputData-error"></span>
+        <p class="help-block">Example block-level help text here.</p>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="multItem">多選項目</label>
+        <div class="inline-options input-sm"
+             vd-name="multItem"
+             vd-required="請選擇項目">
+            <label class="radio-inline"><input type="checkbox" value=" " name="multItem">項目1</label>
+            <label class="radio-inline"><input type="checkbox" value="*" name="multItem">項目2</label>
+        </div>
+        <p class="help-block"></p>
+        <span class="formtip" id="multItem-error"></span>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-save fa-lg"></i> 送出</button>
+    </div>
+</form>
+<pre>
+vd-required="請輸入資料"
+vd-range="[13, 23] =&gt; 範圍請在 {0} 到 {1} 之間"
+vd-digits=""</pre>
+
+
+<hr />
+
+<div class="page-header">
+    <h1>使用方式</h1>
+</div>
+
+<pre>
+ 對應顯示訊息區塊 ID
+&lt;input id="inputData"   &lt;span id="inputData-error"
+        
+--------------------------------------------------------
+vd-required=""  // use default msg
+vd-required="請輸入電子信"
+vd-required="#other:checked" // 參數開頭必須是 # 或 .
+vd-required="#other:checked =&gt; 請輸入名稱"
+vd-remote="check-email.php"
+vd-remote="check-email.php =&gt; 請輸入名稱"
+vd-minlength="3"
+vd-minlength="3 =&gt; 字數需要 {0} 個字"
+vd-maxlength="4"
+vd-maxlength="4 =&gt; 字數不得超過 {0}"
+    
+vd-rangelength="[2, 6]"
+vd-rangelength="[2, 6] =&gt; 字數必須在 {0} 到 {1} 之間"
+vd-min="13"
+vd-min="13 =&gt; 數字不能小於 {0}"
+vd-max="23"
+vd-max="23 =&gt; 數字不能大於 {0}"
+vd-range="[13, 23]" 
+vd-range="[13, 23] =&gt; 數字大小請在 {0} 到 {1} 之間" 
+    
+vd-email=""
+vd-email="請輸入正確的 E-Mail"
+vd-url=""
+vd-url="請輸入正確的 URL"
+vd-date=""
+vd-date="請輸入正確的日期"
+    
+vd-dateISO=""
+vd-dateISO="請輸入正確的日期"
+    
+vd-number=""
+vd-number="請輸入數字"
+vd-digits=""
+vd-digits="請輸入整數"
+vd-equalTo="#password" // 參數開頭必須是 # 或 .
+vd-equalTo="#password =&gt; 密碼確認不一致!"
+vd-regex="[0-9]+ =&gt; 格式不正確！"
+vd-method="myFn =&gt; 驗證不正確！"
+</pre>
+

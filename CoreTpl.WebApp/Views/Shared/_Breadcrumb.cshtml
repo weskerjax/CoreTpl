@@ -1,0 +1,20 @@
+﻿@{ 
+	List<Orion.Mvc.UI.IBreadcrumb> list = Items.Breadcrumb;
+	var last = list.Last();
+}
+<ol id="Breadcrumb" class="breadcrumb" style="margin-bottom:0;" ext-horizontal-fix="">
+	@foreach (var item in list)
+	{
+		if(item == last){
+			<li class="active">
+				@if(!string.IsNullOrWhiteSpace(item.Icon)){ <i class="fa @item.Icon"></i> }
+				@item.Name
+			</li>
+		}else{
+			<li><a href="@Url.Content(item.Url)">
+				@if(!string.IsNullOrWhiteSpace(item.Icon)){ <i class="fa @item.Icon"></i> }
+				@item.Name
+			</a></li>
+		}
+	}    
+</ol>

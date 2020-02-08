@@ -1,0 +1,21 @@
+﻿@model IPagination
+@{ 
+	int totalItems = 0;
+	if (Model != null) { totalItems = Model.TotalItems; }
+
+	int[] items = ViewBag.PageSizeItems;
+	if (items == null || items.Length == 0) { items= new int[] { 20, 30, 50, 100 }; }
+
+	var pageSizeItems = new SelectList(
+		items: items.ToList(x => x.ToString()),
+		selectedValue: ViewBag.PageSize ?? Context.Request.Query["pageSize"]
+	);
+}
+
+
+<div class="toolbar-right form-inline hidden-xs hidden-sm">
+	<span class="form-label form-label-sm">共<b>@totalItems.Comma()</b>筆</span>
+	<span title="每頁顯示筆數" ext-change-submit="">
+		@Html.BsDropDownList("pageSize", pageSizeItems, new { @class = "input-sm", style = "width: 70px", autocomplete = "off" })
+	</span>
+</div>

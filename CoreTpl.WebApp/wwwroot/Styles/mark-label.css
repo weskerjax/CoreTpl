@@ -1,0 +1,42 @@
+﻿.mark-label .item-Enable {
+  background-color: #5cb85c;
+}
+.mark-label .item-Disable {
+  background-color: #d9534f;
+}
+.mark-label .item-StoreIn {
+  background-color: #5cb85c;
+}
+.mark-label .item-StoreOut {
+  background-color: #d9534f;
+}
+.mark-label .item-Load {
+  background-color: #5cb85c;
+}
+.mark-label .item-AirLoad {
+  background-color: #f0ad4e;
+}
+.mark-label .item-BookIn {
+  background-color: #337ab7;
+}
+.mark-label .item-BookOut {
+  background-color: #337ab7;
+}
+.mark-label .item-Create {
+  background-color: #337ab7;
+}
+.mark-label .item-Wait {
+  background-color: #5bc0de;
+}
+.mark-label .item-Queue {
+  background-color: #f0ad4e;
+}
+.mark-label .item-Inprocess {
+  background-color: #5cb85c;
+}
+.mark-label .item-In {
+  background-color: #d9534f;
+}
+.mark-label .item-Out {
+  background-color: #5cb85c;
+}

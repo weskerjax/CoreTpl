@@ -1,0 +1,31 @@
+﻿<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Robots" content="none" />
+<meta name="Author" content="Jax Hu" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+<!-- 字型 Icon (Browser 對靜態載入有更好的快取) -->
+<link rel="stylesheet" href="~/Scripts/font-awesome-4.7.0/css/font-awesome.css" />
+
+<!--網站 Icon-->
+<link href="~/favicon.ico?v2" type="image/ico" rel="shortcut icon" />
+<link href="~/favicon.png?v2" type="image/png" rel="icon" />
+
+<!-- Safari Web Content Guide default 60x60 -->    
+<link rel="apple-touch-icon" href="~/Styles/touch-icon/060.png" />
+<link rel="apple-touch-icon" href="~/Styles/touch-icon/076.png" sizes="76x76" />
+<link rel="apple-touch-icon" href="~/Styles/touch-icon/120.png" sizes="120x120" />
+<link rel="apple-touch-icon" href="~/Styles/touch-icon/152.png" sizes="152x152" />
+<link rel="apple-touch-icon" href="~/Styles/touch-icon/180.png" sizes="180x180" />
+
+<script type="text/javascript">
+var Url = {
+	base: (@Url.Content("~").TrimEnd('/').ToJsonRaw()),
+	Content: function(path) {
+		if(path[0] == '~'){ path = path.substring(1); }
+		if(path[0] != '/'){ path = '/' + path; }
+		return this.base + path;
+	}	
+};
+</script>
+

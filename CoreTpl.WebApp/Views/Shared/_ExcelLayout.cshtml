@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <style type=text/css>
+	table{
+		border-collapse: collapse;
+	}
+	th, td{
+		border:.5pt solid windowtext;
+		border-collapse: collapse;
+	}
+  	.text {
+		mso-number-format:"\@@";
+	} 
+  </style>
+  @RenderSection("Styles", required: false)
+  <title></title>
+</head>
+<body>
+	@RenderSection("Export")
+</body>
+</html>
+<!-- @RenderSection("Scripts", required: false) -->

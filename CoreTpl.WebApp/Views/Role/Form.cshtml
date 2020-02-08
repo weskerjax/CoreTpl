@@ -1,0 +1,156 @@
+﻿@model RoleDomain
+
+
+@{
+	bool isCreate = this.IsRouteAction("Create");
+
+	ViewBag.Title = isCreate ? "新增角色" : "編輯角色-" + Model.RoleName;
+
+
+	if(Model.UserIds == null) { Model.UserIds = new List<int>(); }
+
+	Dictionary<int, string> userFullNameItems = Items.UserFullName;
+
+	Dictionary<string, string> actItems = OrionUtils.EnumToDictionary<ACT>();
+	actItems.Remove(ACT.STK_ZoneSetting.ToString());
+}
+
+@section Styles {
+	<style>
+		#UserTypeahead {
+			max-width: 200px;
+		}
+
+		#UserIdList li {
+			margin-bottom: 5px;
+			clear: left;
+			float: left;
+		}
+	</style>
+
+}
+
+
+@section Scripts {
+	<script type="text/x-jquery-tmpl" id="NewUserTpl">
+		<li class="tag hover-visible">
+			<input type="hidden" name="UserIds" value="${Value}" />
+			${Label}
+			<i class="fa fa-remove visible-target text-danger cursor-pointer" title="刪除" ext-delete-row="li"></i>
+		</li>
+	</script>
+
+
+	<script type="text/javascript">
+		jQuery(function ($) {
+
+			/* 對稱型權限處理 */
+			var $allowActList = $(':checkbox[name=AllowActList]');
+			$allowActList.change(function () {
+				var value = $(this).val();
+				if (/View$/.test(value) && !this.checked) {
+					value = value.replace(/View$/, 'Edit');
+					$allowActList.filter('[value=' + value + ']').prop('checked', this.checked);
+				}
+				if (/Edit$/.test(value) && this.checked) {
+					value = value.replace(/Edit$/, 'View');
+					$allowActList.filter('[value=' + value + ']').prop('checked', this.checked);
+				}
+			});
+
+			/* 使用者選擇處理 */
+			$('#UserTypeahead').on('selected.typeahead', function (event, item) {
+				if ($('#UserIdList input[value=' + item.Value + ']').length > 0) {
+					StatusMsg.error('使用者已經存在');
+				} else {
+					$('#NewUserTpl').tmpl(item).appendTo('#UserIdList');
+				}
+				$(this).val('');
+			});
+
+		});
+	</script>
+
+}
+
+
+
+<div class="page-header">
+	<h1>@ViewBag.Title</h1>
+</div>
+
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+	action = "",
+	@class = "form-horizontal form-sm",
+	ext_one_submit = "",
+	ext_exit_alert = "資料尚未儲存，確定要離開？",
+}))
+{
+	@Html.HiddenFor(m => m.RoleId)
+
+	<div class="well btn-toolbar hidden-print" ext-scroll-follow="">
+		<div class="toolbar-left">
+			<a class="btn btn-default btn-sm" href="@Html.BackUrl(Url.Action("List"))"><i class="fa fa-reply fa-lg"></i> 回列表</a>
+
+			<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save fa-lg"></i> 儲存</button>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body row">
+			<div class="form-group col-xs-6">
+				@Html.BsLabelFor(m => m.RoleName, new { @class = "col-sm-4 required" })
+				<div class="col-sm-8">
+					@Html.BsTextBoxFor(m => m.RoleName)
+					<span class="form-tip">@Html.ValidationMessageFor(m => m.RoleName)</span>
+				</div>
+			</div>
+
+			<div class="form-group col-xs-6">
+				@Html.BsLabelFor(m => m.UseStatus, new { @class = "col-sm-4 required" })
+				<div class="col-sm-8">
+					@Html.BsEnumRadioListFor(m => m.UseStatus, new { ext_selected_mark = "label => selected" })
+				</div>
+			</div>
+
+			@{ var checkboxAttr = new { Class = "column-width-220", ext_selected_mark = "label => selected" };}
+			<div class="form-group col-xs-12">
+				@Html.BsLabelFor(m => m.AllowActList, new { @class = "col-sm-2" })
+				<div class="col-sm-10">
+					@Html.BsCheckboxListFor(m => m.AllowActList, actItems, checkboxAttr)
+				</div>
+			</div>
+
+
+			<div class="form-group col-xs-12">
+				@Html.BsLabelFor(m => m.UserIds, new { @class = "col-sm-2" })
+				<div class="col-sm-10">
+					<input type="text" id="UserTypeahead" class="form-control" ext-typeahead="@Url.Action("Typeahead", "User")" placeholder="搜尋" />
+					<ul id="UserIdList" class="list-unstyled form-control-static">
+						@foreach (var userId in Model.UserIds)
+						{
+							<li class="tag hover-visible">
+								<input type="hidden" name="UserIds" value="@userId" />
+								@userFullNameItems[userId]
+								<i class="fa fa-remove visible-target text-danger cursor-pointer" title="刪除" ext-delete-row="li"></i>
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+
+			<div class="form-group col-xs-12">
+				@Html.BsLabelFor(m => m.RemarkText, new { @class = "col-sm-2" })
+				<div class="col-sm-10">
+					@Html.BsTextAreaFor(m => m.RemarkText)
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+}

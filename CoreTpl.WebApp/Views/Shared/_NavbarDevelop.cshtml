@@ -1,0 +1,12 @@
+﻿@if (User.IsInRole("Develop")) 
+{ 
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-wrench fa-flip-horizontal fa-fw"></i><span class="visible-xs-inline">Develop Tools<i class="fa fa-caret-down fa-fw"></i></span>
+		</a>
+		<ul class="dropdown-menu">
+			<li><a href="@Url.Action("BootstrapOverview", "Develop")">排版範例</a></li>
+			<li><a href="@Url.Action("Icons", "Develop")">圖示工具</a></li>
+		</ul>
+	</li>
+}

@@ -1,0 +1,257 @@
+
+/*=[ animation ]===========================================*/
+.animation(@values) {
+    -webkit-animation: @values;
+    -moz-animation: @values;
+    -ms-animation: @values;
+    -o-animation: @values;
+    animation: @values;
+}
+
+
+
+.vertical-gradient(@start-color, @end-color) {
+    background-image: -webkit-linear-gradient(top, @start-color 0%, @end-color 100%); // Safari 5.1-6, Chrome 10+
+    background-image: -o-linear-gradient(top, @start-color 0%, @end-color 100%); // Opera 12
+    background-image: linear-gradient(to bottom, @start-color 0%, @end-color 100%); // Standard, IE10, Firefox 16+, Opera 12.10+, Safari 7+, Chrome 26+
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@start-color),argb(@end-color))); // IE9 and down
+}
+.reset-filter() {
+  filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)"));
+}
+
+
+
+/*=[ background-size ]===========================================*/
+.bg-vertical-gradient(@color, @amount: 3%) {
+    @lighten: lighten(@color, @amount);
+    @darken: darken(@color, @amount);
+
+    background-color: @color;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@lighten), to(@darken));
+    background-image: -webkit-linear-gradient(top, @lighten, @darken);
+    background-image: -moz-linear-gradient(top, @lighten, @darken);
+    background-image: -ms-linear-gradient(top, @lighten, @darken);
+    background-image: -o-linear-gradient(top, @lighten, @darken);
+    background-image: linear-gradient(to bottom, @lighten, @darken);
+    background-repeat: repeat-x;
+}
+
+
+
+
+
+/*=[ background-size ]===========================================*/
+.background-size(@size) {
+    -webkit-background-size: @size;
+    -moz-background-size: @size;
+    -ms-background-size: @size;
+    -o-background-size: @size;
+    background-size: @size;
+}
+
+
+
+
+
+/*=[ border-radius ]===========================================*/
+.border-radius (@radius) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    -ms-border-radius: @radius;
+    -o-border-radius: @radius;
+    border-radius: @radius;
+}
+
+
+
+
+/*=[ box-shadow ]===========================================*/
+.box-shadow (@shadow1) {
+    -webkit-box-shadow: @shadow1;
+    -moz-box-shadow: @shadow1;
+    -ms-box-shadow: @shadow1;
+    -o-box-shadow: @shadow1;
+    box-shadow: @shadow1;
+}
+
+.box-shadow (@shadow1, @shadow2) {
+    @temp: @shadow1, @shadow2;
+    .box-shadow(@temp);
+}
+
+.box-shadow (@shadow1, @shadow2, @shadow3) {
+    @temp: @shadow1, @shadow2, @shadow3;
+    .box-shadow(@temp);
+}
+
+.box-shadow (@shadow1, @shadow2, @shadow3, @shadow4) {
+    @temp: @shadow1, @shadow2, @shadow3, @shadow4;
+    .box-shadow(@temp);
+}
+
+.box-shadow (@shadow1, @shadow2, @shadow3, @shadow4, @shadow5) {
+    @temp: @shadow1, @shadow2, @shadow3, @shadow4, @shadow5;
+    .box-shadow(@temp);
+}
+
+.box-shadow (@shadow1, @shadow2, @shadow3, @shadow4, @shadow5, @shadow6) {
+    @temp: @shadow1, @shadow2, @shadow3, @shadow4, @shadow5, @shadow6;
+    .box-shadow(@temp);
+}
+
+
+
+
+
+/*=[ box-sizing ]===========================================*/
+.box-sizing (@sizing) {
+    -webkit-box-sizing: @sizing;
+    -moz-box-sizing: @sizing;
+    -ms-box-sizing: @sizing;
+    -o-box-sizing: @sizing;
+    box-sizing: @sizing;
+}
+
+
+
+
+
+/*=[ opacity ]===========================================*/
+.opacity(@opacity) {
+    @opacityRate: @opacity * 100;
+
+    -ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=@{opacityRate})";
+    filter: ~"alpha(opacity=@{opacityRate})";
+    -webkit-opacity: @opacity;
+    -khtml-opacity: @opacity;
+    -moz-opacity: @opacity;
+    -o-opacity: @opacity;
+    opacity: @opacity;
+}
+
+
+
+
+
+
+/*=[ text-shadow ]===========================================*/
+.text-shadow (@shadow) {
+    -webkit-text-shadow: @shadow;
+    -moz-text-shadow: @shadow;
+    -ms-text-shadow: @shadow;
+    -o-text-shadow: @shadow;
+    text-shadow: @shadow;
+}
+
+.text-shadow (@shadow1, @shadow2) {
+    @temp: @shadow1, @shadow2;
+    .text-shadow(@temp);
+}
+
+.text-shadow (@shadow1, @shadow2, @shadow3) {
+    @temp: @shadow1, @shadow2, @shadow3;
+    .text-shadow(@temp);
+}
+
+.text-shadow (@shadow1, @shadow2, @shadow3, @shadow4) {
+    @temp: @shadow1, @shadow2, @shadow3, @shadow4;
+    .text-shadow(@temp);
+}
+
+.text-shadow (@shadow1, @shadow2, @shadow3, @shadow4, @shadow5) {
+    @temp: @shadow1, @shadow2, @shadow3, @shadow4, @shadow5;
+    .text-shadow(@temp);
+}
+
+.text-shadow (@shadow1, @shadow2, @shadow3, @shadow4, @shadow5, @shadow6) {
+    @temp: @shadow1, @shadow2, @shadow3, @shadow4, @shadow5, @shadow6;
+    .text-shadow(@temp);
+}
+
+
+
+
+/*=[ transition ]===========================================*/
+.transition (@setting1) {
+    -webkit-transition: @setting1;
+    -moz-transition: @setting1;
+    -ms-transition: @setting1;
+    -o-transition: @setting1;
+    transition: @setting1;
+}
+
+.transition (@setting1, @setting2) {
+    @temp: @setting1, @setting2;
+    .transition(@temp);
+}
+
+.transition (@setting1, @setting2, @setting3) {
+    @temp: @setting1, @setting2, @setting3;
+    .transition(@temp);
+}
+
+.transition (@setting1, @setting2, @setting3, @setting4) {
+    @temp: @setting1, @setting2, @setting3, @setting4;
+    .transition(@temp);
+}
+
+.transition (@setting1, @setting2, @setting3, @setting4, @setting5) {
+    @temp: @setting1, @setting2, @setting3, @setting4, @setting5;
+    .transition(@temp);
+}
+
+.transition (@setting1, @setting2, @setting3, @setting4, @setting5, @setting6) {
+    @temp: @setting1, @setting2, @setting3, @setting4, @setting5, @setting6;
+    .transition(@temp);
+}
+
+
+
+/*=[ transform ]===========================================*/
+.transform (@setting1) {
+    -webkit-transform: @setting1;
+    -moz-transform: @setting1;
+    -ms-transform: @setting1;
+    -o-transform: @setting1;
+    transform: @setting1;
+}
+
+.transform (@setting1, @setting2) {
+    @temp: @setting1, @setting2;
+    .transform(@temp);
+}
+
+.transform (@setting1, @setting2, @setting3) {
+    @temp: @setting1, @setting2, @setting3;
+    .transform(@temp);
+}
+
+.transform (@setting1, @setting2, @setting3, @setting4) {
+    @temp: @setting1, @setting2, @setting3, @setting4;
+    .transform(@temp);
+}
+
+.transform (@setting1, @setting2, @setting3, @setting4, @setting5) {
+    @temp: @setting1, @setting2, @setting3, @setting4, @setting5;
+    .transform(@temp);
+}
+
+.transform (@setting1, @setting2, @setting3, @setting4, @setting5, @setting6) {
+    @temp: @setting1, @setting2, @setting3, @setting4, @setting5, @setting6;
+    .transform(@temp);
+}
+
+
+
+
+
+/*=[ user-select ]===========================================*/
+.user-select (@select) {
+    -webkit-user-select: @select; /* Chrome all / Safari all */
+    -moz-user-select: @select; /* Firefox all */
+    -ms-user-select: @select; /* IE 10+ */
+    -o-user-select: @select;
+    user-select: @select;
+}

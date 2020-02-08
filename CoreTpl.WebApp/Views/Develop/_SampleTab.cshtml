@@ -1,0 +1,32 @@
+﻿@{
+    var pages = new Dictionary<string, string>()
+    {
+        {"BootstrapOverview", "Bootstrap Overview"},
+        {"SampleForm", "表單"},
+        {"SampleList1", "列表1"},
+        {"SampleList2", "列表2"},
+        {"SampleList3", "列表3"},
+        {"SampleList4", "列表4"},
+        {"SampleExcel", "Html Excel"},
+        {"Dialog", "對話框"},
+        {"IconsExamples", "圖示"},
+        {"WhereBuilder", "WhereBuilder"},
+        
+    };
+}
+
+<ul class="nav nav-tabs" style="margin-bottom: 15px;">
+    @foreach (var entry in pages)
+    {
+        <li class="@(Context.Request.Path.Value.Contains(entry.Key) ? "active" : "")">
+            <a href="@entry.Key">@entry.Value</a>
+        </li>
+    }
+</ul>
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/shared/_DialogLayout.cshtml";    
+    ViewBag.Title = "Modal Dialog";
+}
+
+@section Styles {
+}
+
+
+@section Scripts {
+<script type="text/javascript">
+    Dialog.resize(650, 430);
+
+    jQuery(function ($) {
+        $('.btn-primary').click(function (event) {
+            Dialog.trigger('ok', {
+                'id': '12345',
+                'name': 'test'
+            });
+        });
+    });
+</script>
+}
+
+
+<div class="modal-header">
+  <h4 class="modal-title">@ViewBag.Title</h4>
+</div>
+
+<div class="modal-body auto">
+    <div class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="Password">密碼</label>
+            <div class="controls">
+                <input type="password" name="Password" id="Password" data-val-required="請輸入密碼" data-val="true">
+                <span data-valmsg-replace="true" data-valmsg-for="Password" class="field-validation-valid"></span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="ConfirmPassword" class="control-label">確認密碼</label>
+            <div class="controls">              
+                <input type="password" name="ConfirmPassword" id="ConfirmPassword" data-val-equalto-other="*.Password" data-val-equalto="確認密碼不相同." data-val="true">
+                <span data-valmsg-replace="true" data-valmsg-for="ConfirmPassword" class="field-validation-valid"></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  <button type="button" class="btn btn-primary">Save changes</button>
+</div>
+
+
+    
