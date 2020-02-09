@@ -1,13 +1,11 @@
-﻿using Orion.API.Models;
-using CoreTpl.Domain;
-using CoreTpl.Enums;
-using System.Collections.Generic;
+﻿using CoreTpl.Domain;
+using Orion.API.Models;
 
 namespace CoreTpl.Dao
 {
     public interface IRoleDao
     {
-        Pagination<RoleDomain> GetPagination(string keyword, PageParams<RoleDomain> pageParams);
+        Pagination<RoleDomain> GetPagination(WhereParams<RoleDomain> findParam, PageParams<RoleDomain> pageParams);
         RoleDomain GetById(int roleId);
         int Save(RoleDomain domain);
     }

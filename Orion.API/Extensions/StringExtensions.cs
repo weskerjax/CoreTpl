@@ -86,7 +86,6 @@ namespace Orion.API.Extensions
 		{
 			try
 			{
-                //TODO 是否要增加不區分大小寫 @Jax 2019-12-04
 				return (TEnum)Enum.Parse(typeof(TEnum), enumStr);
 			}
 			catch (ArgumentException ex)

@@ -9,7 +9,7 @@ namespace CoreTpl.Service
     {
                 
         [OperationContract]
-        Pagination<RoleDomain> GetPagination(string keyword, PageParams<RoleDomain> pageParams);
+        Pagination<RoleDomain> GetPagination(WhereParams<RoleDomain> findParam, PageParams<RoleDomain> pageParams);
         
         [OperationContract]
         RoleDomain GetById(int roleId);

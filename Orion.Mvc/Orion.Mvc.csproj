@@ -2,32 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="RouteConstraint\**" />
-    <Content Remove="RouteConstraint\**" />
-    <EmbeddedResource Remove="RouteConstraint\**" />
-    <None Remove="RouteConstraint\**" />
-  </ItemGroup>
-
 
   <ItemGroup>
-    <Compile Remove="Filters\JsonNetActionFilter.cs" />
-    <Compile Remove="Filters\JsonNetResult.cs" />
-    <Compile Remove="HttpErrorHandler.cs" />
     <Compile Remove="ModelBinder\DateTimeOffsetModelBinder.cs" />
-    <Compile Remove="ModelBinder\StringTrimModelBinder.cs" />
-    <Compile Remove="SessionStateControllerFactory.cs" />
   </ItemGroup>
   
   
   <ItemGroup>
+    <None Remove="OCR-b.ttf" />
     <None Remove="UI\menus.xsd" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="OCR-b.ttf" />
     <EmbeddedResource Include="UI\menus.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>

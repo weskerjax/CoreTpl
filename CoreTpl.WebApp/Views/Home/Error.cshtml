@@ -1,25 +1,114 @@
-﻿@model ErrorViewModel
-@{
-    ViewData["Title"] = "Error";
+﻿@{
+    int statusCode = Context.Response.StatusCode;
+
+    string title = "發生錯誤！";
+    string message = "";
+    string color = "#f4b04f";
+    string sigh = "OOPS!";
+
+    switch (statusCode)
+    {
+        case 403:
+            title = "權限不足無法執行！";
+            message = "抱歉！您的帳號權限無法觀看此頁面，請回上一頁，或前往其他頁面。";
+            color = "#f4b04f";
+            sigh = "OOPS!";
+            break;
+
+        case 404:
+            title = "網址頁面並不存在！";
+            message = "抱歉！您所指定網址的資料或頁面並不存在，請回上一頁，或前往其他頁面。";
+            color = "#f4b04f";
+            sigh = "OOPS!";
+            break;
+
+        case 500:
+            title = "伺服器發生錯誤！";
+            message = "抱歉！伺服器發生錯誤，請回上一頁，或前往其他頁面。";
+            color = "#e66454";
+            sigh = "OUCH!";
+            break;
+    }
+
+    ViewData["Title"] = title;
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
 
-@if (Model.ShowRequestId)
+@section Styles {
+<style type="text/css">
+    body{
+        background: #FFFFFF;
+    }
+    #ContainerWrapper {
+        text-align: center;
+    }
+    #ContainerWrapper .error-code {
+        color: @color;
+        font-size: 120px;
+        font-weight: 700;
+        line-height: 140px;
+        margin-top: 60px;
+        text-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+    }
+    #ContainerWrapper .error-text {
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 20px;
+        font-weight: 600;
+        padding: 1px 20px;
+    }
+    #ContainerWrapper .error-text .sigh {
+        font-size: 50px;
+    }
+	@@media (max-width: 600px) {
+	    #MainLayout {
+	        padding-top: 0;
+	    }
+        #NavbarWrapper,
+        #Breadcrumb {
+	        display: none;
+        }
+        #ContainerWrapper .error-code {
+	        font-size: 90px;
+	        line-height: 80px;
+            margin-top: 0;
+        }
+	    #ContainerWrapper .error-text .sigh {
+	        font-size: 40px;
+	    }
+	    #ContainerWrapper .table {
+		    margin-bottom: 10px;
+		}
+	}
+</style>
+}
+
+
+@section Scripts {
+    <script type="text/javascript">
+        Dialog.resize(400, 300);
+    </script>
+}
+
+
+
+
+@if (Context.Request.IsAjaxRequest())
 {
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
+    Layout = null;
+    @title
 }
+else
+{
+    <div class="error-code">@statusCode</div>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+    <div class="error-text">
+        <div class="table sigh">@sigh</div>
+        <div class="table">@(TempData["StatusError"] ?? message)</div>
+        <div class="table">RequestId: @ViewBag.RequestId</div>
+        <div class="table">
+            <a class="btn btn-default" href="JavaScript:history.back();">
+                <i class="fa fa-reply fa-rotate-90"></i> 返回上一頁
+            </a>
+        </div>
+    </div>
+}

@@ -21,4 +21,13 @@
     <ProjectReference Include="..\Orion.Mvc\Orion.Mvc.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="UI\Breadcrumb.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="UI\Menu.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

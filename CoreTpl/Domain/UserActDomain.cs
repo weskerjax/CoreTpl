@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CoreTpl.Enums;
 
 namespace CoreTpl.Domain
 {
@@ -12,6 +13,9 @@ namespace CoreTpl.Domain
         /// <summary>姓名</summary>
         [Display(Name = "姓名")]
         public string UserName { get; set; }
+
+        [Display(Name = "使用者類型")]
+        public UserType UserType { get; set; }
 
         /// <summary>帳號</summary>
         [Display(Name = "帳號")]

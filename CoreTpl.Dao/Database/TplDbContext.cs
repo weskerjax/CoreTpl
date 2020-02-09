@@ -154,8 +154,13 @@ namespace CoreTpl.Dao.Database
 		/// <summary>姓名</summary>
 		[Index, MaxLength(256), Required]
 		public string UserName { get; set; }
+		
+		/// <summary>使用者類型</summary>
+		[MaxLength(32), Required]
+		public string UserType { get; set; }
+		
 
-        /// <summary>E-Mail</summary>
+		/// <summary>E-Mail</summary>
 		[MaxLength(256)]
 		public string Email { get; set; }
 
@@ -216,11 +221,11 @@ namespace CoreTpl.Dao.Database
 	{
 
         /// <summary>使用者Id</summary>
-		[Key, Index]
+		[Key]
 		public int UserId { get; set; }
 
         /// <summary>角色Id</summary>
-		[Key, Index]
+		[Key]
 		public int RoleId { get; set; }
 
         /// <summary>建立人</summary>

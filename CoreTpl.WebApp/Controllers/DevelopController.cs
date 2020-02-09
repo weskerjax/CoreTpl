@@ -1,11 +1,5 @@
-﻿using System.Collections.Generic;
-using CoreTpl.Domain;
-using CoreTpl.Service;
-using CoreTpl.WebApp.Models;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Orion.API;
-using Orion.API.Extensions;
-using Orion.Mvc.Extensions;
 
 
 namespace CoreTpl.WebApp.Controllers
@@ -13,7 +7,7 @@ namespace CoreTpl.WebApp.Controllers
     public class DevelopController : Controller
     {
 
-        //[Authorize(Roles = "DevelopAdmin")]
+        [Authorize(Roles = "DevelopAdmin")]
         public IActionResult Index() { return RedirectToAction(nameof(BootstrapOverview)); }
         public IActionResult BootstrapOverview() { return View(); }
         public IActionResult Dialog() { return View(); }

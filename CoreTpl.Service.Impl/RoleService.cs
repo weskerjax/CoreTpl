@@ -1,9 +1,7 @@
-﻿using Orion.API;
-using Orion.API.Models;
-using CoreTpl.Dao;
+﻿using CoreTpl.Dao;
 using CoreTpl.Domain;
-using CoreTpl.Enums;
-using System.Collections.Generic;
+using Orion.API;
+using Orion.API.Models;
 
 namespace CoreTpl.Service.Impl
 {
@@ -18,11 +16,11 @@ namespace CoreTpl.Service.Impl
 
 
 
-		public Pagination<RoleDomain> GetPagination(string keyword, PageParams<RoleDomain> pageParams)
+		public Pagination<RoleDomain> GetPagination(WhereParams<RoleDomain> findParam, PageParams<RoleDomain> pageParams)
 		{
             using (OrionUtils.TransactionReadUncommitted())
             {
-                return _roleDao.GetPagination(keyword, pageParams);
+                return _roleDao.GetPagination(findParam, pageParams);
             }
 		}
 

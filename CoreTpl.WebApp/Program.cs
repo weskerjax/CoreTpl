@@ -68,26 +68,6 @@ namespace CoreTpl.WebApp
             e.SetObserved();
         }
 
-        //TODO
-        //private static void cultureSetting()
-        //{
-        //    var culture = new CultureInfo("zh-TW");
-
-        //    culture.DateTimeFormat.DateSeparator = "/"; /* Format 會將 / 轉換成此設定，避免問題不替換分隔符號 */
-        //    culture.DateTimeFormat.MonthDayPattern = "MM-dd";
-        //    culture.DateTimeFormat.LongDatePattern = "yyyy-MM-dd";
-        //    culture.DateTimeFormat.ShortDatePattern = "yyyy-MM-dd";
-        //    culture.DateTimeFormat.LongTimePattern = "HH:mm:ss";
-        //    culture.DateTimeFormat.ShortTimePattern = "HH:mm:ss";
-
-        //    Thread.CurrentThread.CurrentCulture = culture;
-        //    Thread.CurrentThread.CurrentUICulture = culture;
-        //}
-
-
-
-
-
 
     }
 }

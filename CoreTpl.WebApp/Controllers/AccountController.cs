@@ -13,7 +13,6 @@ using Orion.Mvc.Extensions;
 
 namespace CoreTpl.WebApp.Controllers
 {
-    //[SessionState(SessionStateBehavior.Required)]
     public class AccountController : Controller
     {
         public IServiceContext Svc { private get; set; }
@@ -57,9 +56,10 @@ namespace CoreTpl.WebApp.Controllers
 
             List<Claim> claims = actList.ToList(x => new Claim(ClaimTypes.Role, x));
 
-            claims.Add(new Claim(OrionUser.UserId, "Jax"));
-            claims.Add(new Claim(OrionUser.UserName, "Jax"));
-            claims.Add(new Claim(OrionUser.Account, "Jax"));
+            claims.Add(new Claim(OrionUser.UserId, user.UserId.ToString()));
+            claims.Add(new Claim(OrionUser.UserName, user.UserName));
+            claims.Add(new Claim(OrionUser.UserType, user.UserType.ToString()));
+            claims.Add(new Claim(OrionUser.Account, user.Account));
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity)).Wait();
@@ -72,6 +72,8 @@ namespace CoreTpl.WebApp.Controllers
         /// <summary>判斷某IP登入錯誤超過幾次需要驗證</summary>
         private bool isUseCaptchaValid()
         {
+            //TODO
+            return true;
             string remoteIp = HttpContext.Connection.RemoteIpAddress.ToString();
             int errorTimes = Svc.User.GetCurrentSignInErrors(remoteIp);
             return errorTimes >= 3;
@@ -84,12 +86,11 @@ namespace CoreTpl.WebApp.Controllers
         public IActionResult Login()
         {
             /*排除已經登入沒有權限*/
-            if (User.Identity.IsAuthenticated) { return RedirectToAction("Forbidden", "Error"); }
+            if (User.Identity.IsAuthenticated) { return StatusCode(403); }
 
             /*排除 Ajax*/
             if (Request.IsAjaxRequest())
             {
-                //Response.TrySkipIisCustomErrors = true;
                 Response.StatusCode = 403;
                 return Content("請登入系統!!");
             }
@@ -109,8 +110,8 @@ namespace CoreTpl.WebApp.Controllers
         public IActionResult Login(UserLoginViewModel vm, string returnUrl)
         {
             ViewBag.UseCaptchaValid = isUseCaptchaValid();
-            //if (ViewBag.UseCaptchaValid == true && !this.IsCaptchaValid("驗證碼無效!"))
-            //{ throw new OrionException("驗證碼無效!"); }
+            if (ViewBag.UseCaptchaValid == true && !this.IsCaptchaValid(vm.Captcha))
+            { throw new OrionException("驗證碼無效!"); }
 
             if (!ModelState.IsValid) { return View(vm); }
 
@@ -138,6 +139,12 @@ namespace CoreTpl.WebApp.Controllers
             return false;
         }
 
+        [AllowAnonymous]
+        public IActionResult Captcha()
+        {
+            return this.CaptchaResult();
+        }
+
 
 
         [HttpPost]
@@ -147,6 +154,7 @@ namespace CoreTpl.WebApp.Controllers
             return Content("OK");
         }
 
+        
 
 
         [HttpPost]
@@ -159,7 +167,6 @@ namespace CoreTpl.WebApp.Controllers
             }
             else
             {
-                //Response.TrySkipIisCustomErrors = true;
                 Response.StatusCode = 403;
                 return Content("False");
             }

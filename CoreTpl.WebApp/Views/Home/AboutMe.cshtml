@@ -1,0 +1,37 @@
+﻿@{
+	Layout = "~/Views/Shared/_DialogLayout.cshtml";
+
+	ViewBag.Title = "關於 " + Items.TplConfig.Title;
+
+	AssemblyMeta asmMeta = ViewBag.AsmMeta;
+}
+
+
+@section Styles {
+}
+
+
+@section Scripts {
+	<script type="text/javascript">Dialog.resize(420, 320);</script>
+}
+
+<div class="modal-header">
+	<h4 class="modal-title">@ViewBag.Title</h4>
+</div>
+
+<div class="modal-body auto">
+	<div class="col-xs-3">
+		<img src="~/Styles/Images/logo_64.png" />
+	</div>
+	<div class="col-xs-9">
+		<ul class="list-unstyled">
+			<li>版本: @asmMeta.Version</li>
+			<li>日期: @asmMeta.Description</li>
+			<li>@asmMeta.Copyright</li>
+		</ul>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<span class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times fa-lg"></i> 關閉</span>
+</div>

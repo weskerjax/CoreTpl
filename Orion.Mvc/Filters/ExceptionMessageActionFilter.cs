@@ -12,15 +12,6 @@ namespace Orion.Mvc.Filters
 	public class ExceptionMessageActionFilter : ActionFilterAttribute
 	{
 
-		private Type[] _exceptionTypes;
-
-		/// <summary></summary>
-		public ExceptionMessageActionFilter(params Type[] exceptionTypes)
-		{
-			_exceptionTypes = exceptionTypes;
-		}
-
-
 		/// <summary></summary>
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
@@ -42,7 +33,7 @@ namespace Orion.Mvc.Filters
 			if (filterContext.ExceptionHandled) { return; }
 
 			var ex = filterContext.Exception;
-			if (!_exceptionTypes.Any(x => x.IsInstanceOfType(ex))) { return; }
+			if (!(ex is OrionException)) { return; }
 
 
 			filterContext.ExceptionHandled = true;
@@ -50,15 +41,13 @@ namespace Orion.Mvc.Filters
 
 			if (filterContext.HttpContext.Request.IsAjaxRequest())
 			{
-				//TODO
-				//filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
-				//filterContext.HttpContext.Response.StatusCode = 400;
+				filterContext.HttpContext.Response.StatusCode = 400;
 				filterContext.Result = new ContentResult { StatusCode = 400, Content = ex.Message };
 			}
 			else if (ex is OrionNoDataException) 
 			{
 				controller.TempData["StatusError"] = ex.Message;
-				filterContext.Result = new ContentResult { StatusCode = 404, Content = "[" + ex.Message + "]" };
+				filterContext.HttpContext.Response.StatusCode = 404;
 			}
 			else
 			{

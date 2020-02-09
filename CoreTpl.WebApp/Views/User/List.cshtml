@@ -5,8 +5,6 @@
 	Pagination<UserDomain> pagination = ViewBag.Pagination;
 	IHtmlHelper<UserDomain> pageHtml = Html.PropertyHelper(pagination);
 
-	bool canEdit = User.AnyAct(ACT.STK_UserSetting);
-
 }
 
 @section Styles {
@@ -25,17 +23,30 @@
 @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "SearchForm", @class = "well btn-toolbar", ext_horizontal_fix = "" }))
 {
 	<div class="toolbar-left">
-		@if (canEdit)
-		{ <a class="btn btn-success btn-sm" href="@Url.Action("Create")"><i class="fa fa-plus fa-lg"></i> 新增</a> }
-		else
-		{ <b class="btn btn-success btn-sm disabled" title="權限不足"><i class="fa fa-plus fa-lg"></i> 新增</b> }
+		<a class="btn btn-success btn-sm" href="@Url.Action("Create")"><i class="fa fa-plus fa-lg"></i> 新增</a>
 	</div>
 
-	<div class="toolbar-left input-group input-group-sm" style="width: 300px;">
-		@Html.BsTextBox("keyword", null, new { placeholder = "關鍵字" })
-		<div class="input-group-btn">
-			<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search fa-lg"></i> 搜尋</button>
-		</div>
+	<div class="toolbar-left">
+		@(Html.WhereBuilder(pagination)			
+			.Column(x => x.UserId)
+			.Column(x => x.Account)
+			.Column(x => x.UserName)
+			.Column(x => x.Email)
+			.Column(x => x.UseStatus)
+			.Column(x => x.Department)
+			.Column(x => x.ExtensionNum)
+			.Column(x => x.UserTitle)
+			.Column(x => x.RemarkText)
+			.Column(x => x.RoleIds, Items.RoleName)
+			.Column(x => x.CreateBy)
+			.Column(x => x.CreateDate)
+			.Column(x => x.ModifyBy)
+			.Column(x => x.ModifyDate)
+		)
+	</div>
+
+	<div class="toolbar-left">
+		<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search fa-lg"></i> 搜尋</button>
 	</div>
 
 	<div class="toolbar-left hidden-xs hidden-sm">		
@@ -71,17 +82,11 @@
 			<tr>
 				<td class="min">
 					@{ string editUrl = Url.Action("Edit", new { row.UserId }); }
-					@if (canEdit)
-					{ <a class="btn btn-warning btn-xs btn-icon" href="@editUrl"><i class="fa fa-pencil fa-lg"></i></a> }
-					else
-					{ <b class="btn btn-warning btn-xs btn-icon disabled" title="權限不足"><i class="fa fa-pencil fa-lg"></i></b> }
+					<a class="btn btn-warning btn-xs btn-icon" href="@editUrl"><i class="fa fa-pencil fa-lg"></i></a>
 				</td>
 				<td class="min">
 					@{ string setPasswordUrl = Url.Action("SetPassword", new { row.UserId }); }
-					@if (canEdit)
-					{ <a class="btn btn-danger btn-xs btn-icon" href="@setPasswordUrl" target="dialog" title="設定密碼"><i class="fa fa-key fa-lg"></i></a> }
-					else
-					{ <b class="btn btn-danger btn-xs btn-icon disabled" title="設定密碼-權限不足"><i class="fa fa-key fa-lg"></i></b> }
+					<a class="btn btn-danger btn-xs btn-icon" href="@setPasswordUrl" target="dialog" title="設定密碼"><i class="fa fa-key fa-lg"></i></a>
 				</td>
 				<td class="Account">@row.Account</td>
 				<td class="UserName">@row.UserName</td>

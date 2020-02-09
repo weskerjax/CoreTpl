@@ -42,11 +42,21 @@ namespace CoreTpl.Dao.Impl
 
 
 
-		public Pagination<RoleDomain> GetPagination(string keyword, PageParams<RoleDomain> pageParams)
+		public Pagination<RoleDomain> GetPagination(WhereParams<RoleDomain> findParam, PageParams<RoleDomain> pageParams)
 		{
-
 			IQueryable<RoleInfo> query = _dc.RoleInfo;
-			query = query.WhereHas(x => x.RoleName.Contains(keyword.Trim()));
+
+			query = query.WhereBuilder(findParam)
+				.WhereBind(x => x.RoleId, y => y.RoleId)
+				.WhereBind(x => x.RoleName, y => y.RoleName)
+				.WhereBind(x => x.RemarkText, y => y.RemarkText)
+				.WhereBind(x => x.UseStatus, y => y.UseStatus)
+				.WhereBind(x => x.UserIds, y => y.UserRole.Select(z => z.UserId))
+				.WhereBind(x => x.CreateBy, y => y.CreateBy)
+				.WhereBind(x => x.CreateDate, y => y.CreateDate)
+				.WhereBind(x => x.ModifyBy, y => y.ModifyBy)
+				.WhereBind(x => x.ModifyDate, y => y.ModifyDate)
+				.Build();
 
             pageParams = pageParams.NullToUnlimited();
 

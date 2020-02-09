@@ -22,11 +22,11 @@ namespace CoreTpl.Service.Impl
         }
 
 
-        public Pagination<UserDomain> GetPagination(string keyword, PageParams<UserDomain> pageParams)
+        public Pagination<UserDomain> GetPagination(WhereParams<UserDomain> findParam, PageParams<UserDomain> pageParams)
         {
             using (OrionUtils.TransactionReadUncommitted())
             {
-                return _userDao.GetPagination(keyword, pageParams);
+                return _userDao.GetPagination(findParam, pageParams);
             }
         }
 

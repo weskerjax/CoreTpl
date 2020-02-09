@@ -1,15 +1,13 @@
-﻿using Orion.API.Models;
+﻿using System.Collections.Generic;
 using CoreTpl.Domain;
-using CoreTpl.Enums;
-using System;
-using System.Collections.Generic;
+using Orion.API.Models;
 
 
 namespace CoreTpl.Dao
 {
     public interface IUserDao
     {
-        Pagination<UserDomain> GetPagination(string keyword, PageParams<UserDomain> pageParams);
+        Pagination<UserDomain> GetPagination(WhereParams<UserDomain> findParam, PageParams<UserDomain> pageParams);
         UserDomain GetById(int userId);
         UserDomain GetByAccount(string account);
         int Save(UserDomain domain);

@@ -10,7 +10,7 @@ namespace CoreTpl.Service
     {
 
         [OperationContract]
-        Pagination<UserDomain> GetPagination(string keyword, PageParams<UserDomain> pageParams);
+        Pagination<UserDomain> GetPagination(WhereParams<UserDomain> findParam, PageParams<UserDomain> pageParams);
 
         [OperationContract]
         UserDomain GetById(int userId);

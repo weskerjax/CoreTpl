@@ -202,7 +202,6 @@ namespace Orion.Mvc.Html
 		/// <summary></summary>
 		public static IHtmlContent PagerSort(this IHtmlHelper helper, string column, string name, string sortParam, string descParam)
 		{
-			//TODO 改使用 QueryString
 			string queryString = helper.ViewContext.HttpContext.Request.QueryString.Value;
 			return pagerSort(queryString, column, name, sortParam, descParam);
 		}

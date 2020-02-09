@@ -15,5 +15,9 @@ namespace CoreTpl.WebApp.Models
 		[Display(Name = "密碼")]
 		public string Password { get; set; }
 
+
+		[Display(Name = "驗證碼")]
+		public string Captcha { get; set; }
+
 	}
 }

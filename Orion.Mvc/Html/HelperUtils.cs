@@ -146,30 +146,7 @@ namespace Orion.Mvc.Html
 			return list;
 		}
 
-
-
-
-		////TODO delete
-		///// <summary></summary>
-		//public static IEnumerable<SelectListItem> MarkSelectList(IHtmlHelper htmlHelper, ModelExplorer metadata, string name, IEnumerable<SelectListItem> selectList, bool multiple)
-		//{
-		//	if (string.IsNullOrEmpty(name)) { return selectList; }			
-		//	if (selectList == null) { return selectList; }
-
-		//	ISet<string> values = GetCurrentValues(htmlHelper, metadata, name, multiple);
-		//	if (values == null) { return selectList; }
-
-		//	var list = selectList.ToList();
-		//	list.ForEach(item =>
-		//	{
-		//		item.Selected = (item.Value != null) ? values.Contains(item.Value) : values.Contains(item.Text);
-		//	});
-
-		//	return list;
-		//}
-
-
-
+			   
 
 
 		/// <summary>判斷是否為可編輯</summary>

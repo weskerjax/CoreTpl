@@ -13,7 +13,8 @@
 @section Styles {
 	<style type="text/css">
 		#EmptyLayout {
-			background: #fff;
+			background-color: #fff;
+			background-image: linear-gradient(to bottom, #FFF 0%, #666 100%);    
 		}
 
 		#BodyBg {
@@ -25,13 +26,13 @@
 		}
 
 		#SubmitForm {
-			margin: -230px auto 0 auto;
+			margin: -150px auto 0 -170px;
 			padding: 5px 0;
 			width: 340px;
 			max-width: 100%;
 			position: absolute;
-			top:44%;
-			right: 10%;
+			top: 44%;
+			left: 50%;
 			z-index: 999;
 		}
 
@@ -77,7 +78,7 @@
 		<div class="panel-heading">@Items.TplConfig.Title</div>
 
 
-		<form class="panel-body" method="post" action="" ext-one-submit="">
+		<form class="panel-body form-sm" method="post" action="" ext-one-submit="">
 			<partial name="_StatusMsg" />
 
 			<div class="form-group">
@@ -95,17 +96,29 @@
 				<span class="form-tip">@Html.ValidationMessageFor(m => m.Password)</span>
 			</div>
 
-@*
 	
 			@if (useCaptchaValid)
 			{
 				<div class="form-group">
-					<div class="input-group">			
-						@Html.Captcha(4, "_LoginCaptcha")
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-check fa-fw"></i></span>
+						@Html.BsTextBoxFor(m => m.Captcha, new { 		
+							placeholder = "驗證碼",
+							data_val = "true", 
+							data_val_required = "請輸入驗證碼!!",
+						})
+						<b id="RefreshCaptcha" class="input-group-addon" title="按一下換一張" style="padding:0; overflow:hidden;">
+							<img src="@Url.Action("Captcha")?t=@DateTime.Now.Ticks" style="height:28px;" />
+						</b>    
 					</div>
+					<span class="form-tip">@Html.ValidationMessageFor(m => m.Captcha)</span>
 				</div>				
+				<script type="text/javascript">
+					$('#RefreshCaptcha').click(function () {
+						$(this).find('img').attr('src', function () { return this.src + '&a=1'; })
+					});	
+				</script>
 			}
-*@			
 
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary btn-block">登入 <i class="fa fa-sign-in fa-lg"></i></button>
@@ -117,3 +130,4 @@
 
 </div>
 
+ 

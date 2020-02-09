@@ -5,13 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Account\_LoginCaptcha.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
-    <!--<PackageReference Include="ElmahCore" Version="1.2.5" />-->
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />    
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="NLog" Version="4.6.8" />
   </ItemGroup>  

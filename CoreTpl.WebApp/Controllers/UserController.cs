@@ -13,23 +13,10 @@ using Orion.Mvc.Extensions;
 
 namespace CoreTpl.WebApp.Controllers
 {
-    [ActAuthorize(ACT.STK_UserSetting)]
+    [ActAuthorize(ACT.UserSetting)]
     public class UserController : Controller
     {
         public IServiceContext Svc { private get; set; }
-
-
-
-
-        //protected override void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)
-        //{
-        //    if (User.Identity.IsAuthenticated) { return; }
-
-        //    var result = filterContext.Result as HttpUnauthorizedResult;
-        //    if (result?.StatusCode == 401) { filterContext.Result = Redirect("~/"); }
-        //}
-        
-
 
 
         public IActionResult Index()
@@ -39,11 +26,9 @@ namespace CoreTpl.WebApp.Controllers
 
 
 
-
-
-        public IActionResult List(PageParams<UserDomain> pageParams, string keyword = null)
+        public IActionResult List(WhereParams<UserDomain> findParam, PageParams<UserDomain> pageParams)
         {
-            Pagination<UserDomain> domainPage = Svc.User.GetPagination(keyword, pageParams);
+            Pagination<UserDomain> domainPage = Svc.User.GetPagination(findParam, pageParams);
             ViewBag.Pagination = domainPage;
 
             return View();
@@ -52,8 +37,9 @@ namespace CoreTpl.WebApp.Controllers
 
         public IActionResult Typeahead(string query)
         {
+            var findParam = new WhereParams<UserDomain>().Assign(x => x.Account.Contains(query));
 
-            Pagination<UserDomain> domainPage = Svc.User.GetPagination(query, new PageParams<UserDomain>
+            Pagination<UserDomain> domainPage = Svc.User.GetPagination(findParam, new PageParams<UserDomain>
             {
                 PageIndex = 1,
                 PageSize = 40,
@@ -76,7 +62,6 @@ namespace CoreTpl.WebApp.Controllers
 
         [HttpGet]
         [UseViewPage("Form")]
-        //[ActAuthorize(ACT.STK_UserSetting)]
         public IActionResult Create()
         {
             var domain = new UserDomain
@@ -90,7 +75,6 @@ namespace CoreTpl.WebApp.Controllers
 
         [HttpPost]
         [UseViewPage("Form")]
-        [ActAuthorize(ACT.STK_UserSetting)]
         public IActionResult Create(UserDomain domain)
         {
             if (!ModelState.IsValid) { return View(domain); }
@@ -120,7 +104,6 @@ namespace CoreTpl.WebApp.Controllers
 
         [HttpGet]
         [UseViewPage("Form")]
-        //[ActAuthorize(ACT.STK_UserSetting)]
         public IActionResult Edit(int userId)
         {
             ViewBag.HoldActList = Svc.User.GetHoldActList(userId);
@@ -134,7 +117,6 @@ namespace CoreTpl.WebApp.Controllers
 
         [HttpPost]
         [UseViewPage("Form")]
-        [ActAuthorize(ACT.STK_UserSetting)]
         public IActionResult Edit(UserDomain domain)
         {
             ViewBag.HoldActList = Svc.User.GetHoldActList(domain.UserId);
@@ -152,7 +134,6 @@ namespace CoreTpl.WebApp.Controllers
 
 
 
-        [ActAuthorize(ACT.STK_UserSetting)]
         public IActionResult SetPassword(UserSetPasswordViewModel vm)
         {
             if (Request.IsGetMethod()) { return View(vm); }
@@ -162,13 +143,11 @@ namespace CoreTpl.WebApp.Controllers
             this.SetStatusSuccess("儲存成功!!");
             return View(vm);
         }
-
-
+        
 
 
 
         [HttpGet]
-        [ActAuthorize(ACT.STK_UserActSetting)]
         public IActionResult ActEdit(int userId)
         {
             UserActDomain domain = Svc.User.GetSelfAct(userId);
@@ -192,7 +171,6 @@ namespace CoreTpl.WebApp.Controllers
 
 
         [HttpPost]
-        [ActAuthorize(ACT.STK_UserActSetting)]
         public IActionResult ActEdit(UserActViewModel vm)
         {
             UserActDomain domain = Svc.User.GetSelfAct(vm.UserId);

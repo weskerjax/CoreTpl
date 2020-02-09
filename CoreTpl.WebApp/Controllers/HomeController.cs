@@ -1,12 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using CoreTpl.Service;
-using CoreTpl.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Orion.API;
 using Orion.API.Models;
-using Orion.Mvc.Extensions;
 
 namespace CoreTpl.WebApp.Controllers
 {
@@ -19,9 +17,14 @@ namespace CoreTpl.WebApp.Controllers
         //[AllowAnonymous]
         public IActionResult Index()
         {
+            //throw new Exception("錯誤測試");
+            //throw new OrionException("錯誤測試");
+            //throw new OrionNoDataException("沒有資料測試");
+
             //return RedirectToAction("Login", "Account");
             //return RedirectToAction("Create", "Role");
-            
+            return RedirectToAction("List", "Role");
+
             return View();
         }
 
@@ -38,7 +41,6 @@ namespace CoreTpl.WebApp.Controllers
 
 
 
-        //[AllowAnonymous]
         public IActionResult AboutMe()
         {
             AssemblyMeta asmMeta = AssemblyUtils.GetMeta(Assembly.GetExecutingAssembly());
@@ -54,17 +56,13 @@ namespace CoreTpl.WebApp.Controllers
 
         /*=================================================================*/
 
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [AllowAnonymous]
         public IActionResult Error()
         {
-            var vm = new ErrorViewModel 
-            { 
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier 
-            };
-
-            return View(vm);
+            ViewBag.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            return View();
         }
+
 
 
     }

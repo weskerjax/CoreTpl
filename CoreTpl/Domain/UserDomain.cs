@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CoreTpl.Enums;
 using Orion.API.Models;
 
 
@@ -22,7 +23,10 @@ namespace CoreTpl.Domain
         [Required]
         [Display(Name = "姓名")]
         public string UserName { get; set; }
-        
+
+        [Display(Name = "使用者類型")]
+        public UserType UserType { get; set; }
+
         /// <summary>E-Mail</summary>
         [Display(Name = "E-Mail")]
         public string Email { get; set; }

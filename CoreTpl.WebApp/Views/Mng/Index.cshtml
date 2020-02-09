@@ -1,0 +1,12 @@
+﻿@{
+    var list = new List<string> {
+        Url.Action("Execute", new { id = "CassetteRebuild"}),
+        Url.Action("TableSize"),
+    };
+}
+
+<ul>
+	@foreach (var path in list) { 
+		<li><a href="@path">@path</a><br/>&nbsp;</li>
+	}
+</ul>

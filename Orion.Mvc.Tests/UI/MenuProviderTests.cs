@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using Xunit;
-using System.Linq;
-using Orion.API.Extensions;
 
 namespace Orion.Mvc.UI.Tests
 {

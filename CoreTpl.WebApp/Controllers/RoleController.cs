@@ -10,22 +10,10 @@ using Orion.Mvc.Extensions;
 namespace CoreTpl.WebApp.Controllers
 {
 
-    [ActAuthorize(ACT.STK_RoleSetting)]
+    [ActAuthorize(ACT.RoleSetting)]
     public class RoleController : Controller
     {
         public IServiceContext Svc { private get; set; }
-
-
-
- 
-        //protected override void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)
-        //{
-        //    if (User.Identity.IsAuthenticated) { return; }
-
-        //    var result = filterContext.Result as HttpUnauthorizedResult;
-        //    if (result?.StatusCode == 401) { filterContext.Result = Redirect("~/"); }
-        //}
-
 
 
 
@@ -36,12 +24,13 @@ namespace CoreTpl.WebApp.Controllers
 
 
 
-        public IActionResult List(PageParams<RoleDomain> pageParams, string keyword = null)
+        public IActionResult List(WhereParams<RoleDomain> findParam, PageParams<RoleDomain> pageParams)
         {
-            //Pagination<RoleDomain> domainPage = Svc.Role.GetPagination(keyword, pageParams);
-            //ViewBag.Pagination = domainPage;
+            Pagination<RoleDomain> domainPage = Svc.Role.GetPagination(findParam, pageParams);
+            ViewBag.Pagination = domainPage;
 
-            ViewBag.Pagination = Pagination<RoleDomain>.Empty();
+            //TODO delete
+            //ViewBag.Pagination = Pagination<RoleDomain>.Empty();
 
             return View();
         }
@@ -64,10 +53,7 @@ namespace CoreTpl.WebApp.Controllers
         [HttpPost]
         [UseViewPage("Form")]
         public IActionResult Create(RoleDomain domain)
-        {
-            //TODO
-            return View(domain); 
-            
+        {           
             if (!ModelState.IsValid) { return View(domain); }
 
             domain.ModifyBy = this.UserId();

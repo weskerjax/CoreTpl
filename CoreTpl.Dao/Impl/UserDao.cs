@@ -30,6 +30,7 @@ namespace CoreTpl.Dao.Impl
                 UserId = data.UserId,
                 Account = data.Account,
                 UserName = data.UserName,
+                UserType = data.UserType.ToEnum<UserType>(),
                 Email = data.Email,
                 UseStatus = data.UseStatus.ToEnum<UseStatus>(),
                 Department = data.Department,
@@ -56,21 +57,27 @@ namespace CoreTpl.Dao.Impl
 
 
 
-        public Pagination<UserDomain> GetPagination(string keyword, PageParams<UserDomain> pageParams)
+        public Pagination<UserDomain> GetPagination(WhereParams<UserDomain> findParam, PageParams<UserDomain> pageParams)
         {
             IQueryable<UserInfo> query = _dc.UserInfo;
 
-
-            if (keyword.HasText())
-            {
-                keyword = keyword.Trim();
-
-                query = query.Where(q =>
-                    q.Account.Contains(keyword) ||
-                    q.UserName.Contains(keyword) ||
-                    q.UserTitle.Contains(keyword)
-                );
-            }
+            query = query.WhereBuilder(findParam)
+                .WhereBind(x => x.UserId, y => y.UserId)
+                .WhereBind(x => x.Account, y => y.Account)
+                .WhereBind(x => x.UserName, y => y.UserName)
+                .WhereBind(x => x.UserType, y => y.UserType)
+                .WhereBind(x => x.Email, y => y.Email)
+                .WhereBind(x => x.UseStatus, y => y.UseStatus)
+                .WhereBind(x => x.Department, y => y.Department)
+                .WhereBind(x => x.ExtensionNum, y => y.ExtensionNum)
+                .WhereBind(x => x.UserTitle, y => y.UserTitle)
+                .WhereBind(x => x.RemarkText, y => y.RemarkText)
+                .WhereBind(x => x.RoleIds, y => y.UserRole.Select(z => z.RoleId))
+                .WhereBind(x => x.CreateBy, y => y.CreateBy)
+                .WhereBind(x => x.CreateDate, y => y.CreateDate)
+                .WhereBind(x => x.ModifyBy, y => y.ModifyBy)
+                .WhereBind(x => x.ModifyDate, y => y.ModifyDate)
+                .Build();
 
 
             pageParams = pageParams.NullToUnlimited();
@@ -135,6 +142,7 @@ namespace CoreTpl.Dao.Impl
                 data = new UserInfo
                 {
                     Account = domain.Account.ToLower(),
+                    UserType = domain.UserType.ToString(),
                     CreateBy = domain.ModifyBy,
                     CreateDate = DateTime.Now,
                 };
@@ -216,6 +224,7 @@ namespace CoreTpl.Dao.Impl
             {
                 UserId = data.UserId,
                 UserName = data.UserName,
+                UserType = data.UserType.ToEnum<UserType>(),
                 Account = data.Account,
                 CreateBy = data.ModifyBy,
                 CreateDate = data.CreateDate,

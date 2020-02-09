@@ -40,13 +40,9 @@
 
 			<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save fa-lg"></i> 儲存</button>
 
-			@if (!isCreate && User.AnyAct(ACT.STK_UserActSetting))
-			{
-				<a class="btn btn-default btn-sm" href="@Url.Action("ActEdit", new { Model.UserId })">
-					<i class="fa fa-pencil fa-lg"></i> 個人權限
-				</a>
-			}
-
+			<a class="btn btn-default btn-sm" href="@Url.Action("ActEdit", new { Model.UserId })">
+				<i class="fa fa-pencil fa-lg"></i> 個人權限
+			</a>
 		</div>
 	</div>
 
