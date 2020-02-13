@@ -189,7 +189,10 @@ namespace Orion.Mvc.Html
 		public static IHtmlContent PagerSortFor<TModel, TProp>(this IHtmlHelper<TModel> helper, Expression<Func<TModel, TProp>> expression, string name)
 		{
 			PropertyInfo prop = expression.GetProperty();
-			return PagerSort(helper, prop.Name, name ?? prop.GetDisplayName());
+			if (name.NoText()) { name = prop.GetDisplayName(); }
+			if (name.NoText()) { name = prop.Name; }
+
+			return PagerSort(helper, prop.Name, name);
 		}
 
 

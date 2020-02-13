@@ -47,6 +47,9 @@
 
 	<div class="toolbar-left">
 		<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search fa-lg"></i> 搜尋</button>
+		<a class="btn btn-default btn-sm hidden-xs hidden-sm" href="?Export=true&@Context.Request.QueryString" target="_blank">
+			<i class="fa fa-file-excel-o fa-lg"></i> 匯出
+		</a>
 	</div>
 
 	<div class="toolbar-left hidden-xs hidden-sm">		
@@ -110,3 +113,23 @@
 <div class="text-center" ext-horizontal-fix="">
 	<ul class="pagination pagination-sm">@Html.PagerLinks(pagination)</ul>
 </div>
+
+
+
+
+@section Export {
+	@if (ViewBag.IsExport != true) { return; }
+
+	@(Html.ExcelExport(pagination.List)
+		.ColumnOrder(tableListId)
+		.Column(row => row.Account)
+		.Column(row => row.UserName)
+		.Column(row => row.ExtensionNum)
+		.Column(row => row.UserTitle)
+		.Column(row => row.Department)
+		.Column(row => row.Email)
+		.Column(row => row.RemarkText)
+		.Column(row => Html.ShowItem(row.RoleIds, Items.RoleName))
+		.Column(row => Html.ShowItem(row.UseStatus))
+	)
+}

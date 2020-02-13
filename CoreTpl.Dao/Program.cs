@@ -6,10 +6,11 @@ namespace CoreTpl.Dao
 {
     class Program
     {
-        public static void Main(string[] args) { }
+        public static void Main(string[] args) 
+        {
+            TplDbContext dc = new DesignTimeDbContextFactory().CreateDbContext(args);
+        }
     }
-
-
 
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<TplDbContext>
     {

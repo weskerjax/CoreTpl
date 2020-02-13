@@ -16,9 +16,7 @@ namespace Orion.API.Extensions.Tests
 
         public QueryableExtensionsTests()
         {
-            string mdfPath = Path.GetFullPath(@"..\..\OrionApi.mdf");
-            string connection = $@"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename={mdfPath};Integrated Security=True";
-            _dc = new OrionApiDbContext(new DbContextOptions<OrionApiDbContext>());
+			_dc = new OrionApiDbContext();
         }
 
 
@@ -41,16 +39,16 @@ namespace Orion.API.Extensions.Tests
         {
             var sqlA = _dc.InvoiceIssue
                 .AdvancedOrderBy("InvoiceId", true)
-                .ToString();
+                .ToSql();
 
-            Assert.Contains("ORDER BY [t0].[InvoiceId] DESC", sqlA);
+            Assert.Contains("ORDER BY i.\"InvoiceId\" DESC", sqlA);
 
 
             var sqlB = _dc.InvoiceIssue
                 .AdvancedOrderBy("InvoiceId,-InvoicePrefix,InvoiceDate", true)
-                .ToString();
+                .ToSql();
 
-            Assert.Contains("ORDER BY [t0].[InvoiceId], [t0].[InvoicePrefix] DESC, [t0].[InvoiceDate]", sqlB);
+            Assert.Contains("ORDER BY i.\"InvoiceId\", i.\"InvoicePrefix\" DESC, i.\"InvoiceDate\"", sqlB);
             
         }
 

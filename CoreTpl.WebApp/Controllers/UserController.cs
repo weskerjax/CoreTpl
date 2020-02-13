@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CoreTpl.Domain;
 using CoreTpl.Enums;
@@ -26,12 +27,16 @@ namespace CoreTpl.WebApp.Controllers
 
 
 
-        public IActionResult List(WhereParams<UserDomain> findParam, PageParams<UserDomain> pageParams)
+        [TplSearchRemember]
+        public IActionResult List(WhereParams<UserDomain> findParam, PageParams<UserDomain> pageParams, bool export = false)
         {
+            if (export) { pageParams.PageIndex = 1; pageParams.PageSize = -1; }
+
             Pagination<UserDomain> domainPage = Svc.User.GetPagination(findParam, pageParams);
             ViewBag.Pagination = domainPage;
 
-            return View();
+            if (!export) { return View(); }
+            return this.ExcelView($"使用者-{DateTime.Now:yyyyMMddHHmmss}.xls");
         }
 
 

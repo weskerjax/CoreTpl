@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Web;
 using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Orion.API.Extensions;
 
@@ -19,7 +20,7 @@ namespace Orion.Mvc.Html
 		/// <summary></summary>
 		public static HtmlExcelExport<T> ExcelExport<T>(this IHtmlHelper helper, IEnumerable<T> dataSource) where T : class
 		{
-			return new HtmlExcelExport<T>(dataSource, helper.ViewContext.Writer);
+			return new HtmlExcelExport<T>(helper.ViewContext, dataSource);
 		}
 		
 	}
@@ -38,12 +39,16 @@ namespace Orion.Mvc.Html
 
 		private string _headerStyle = "color: #fff; background: #2d6da3;";
 
+		public ViewContext ViewContext { get; private set; }
+		public HttpContext HttpContext { get; private set; }
 
 		/// <summary></summary>
-		public HtmlExcelExport(IEnumerable<T> dataSource, TextWriter writer)
+		public HtmlExcelExport(ViewContext context, IEnumerable<T> dataSource)
 		{
+			ViewContext = context;
+			HttpContext = context.HttpContext;
+			_writer = context.Writer;
 			_dataSource = dataSource;
-			_writer = writer;
 
 			foreach (PropertyInfo prop in typeof(T).GetProperties().Where(x => x.CanRead))
 			{

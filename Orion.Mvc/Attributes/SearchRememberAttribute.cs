@@ -9,8 +9,9 @@ using Orion.API.Extensions;
 namespace Orion.Mvc.Attributes
 {
 	/// <summary></summary>
+	[AttributeUsage(AttributeTargets.Method, Inherited = true)]
 	public class SearchRememberAttribute : ActionFilterAttribute
-    {
+	{
         private static string _storeName = "sr"; 
 
         private static string[] _skipKey = { 

@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Reflection;
+using CoreTpl.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Orion.API.Extensions;
+using Orion.API.Models;
 
 namespace CoreTpl.Dao.Database
 {
@@ -13,8 +17,8 @@ namespace CoreTpl.Dao.Database
 	{
 		public TplDbContext(DbContextOptions<TplDbContext> options) : base(options)
 		{
-
 		}
+
 
 		/// <summary>角色</summary>
 		public DbSet<RoleInfo> RoleInfo { get; set; }
@@ -35,23 +39,26 @@ namespace CoreTpl.Dao.Database
 
 		/*-----------------------------------------------------*/
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			if (!optionsBuilder.IsConfigured)
-			{
-				optionsBuilder.UseNpgsql("Host=localhost;Database=CoreTpl;Username=postgres;Password=p@ssw0rd");
-			}
-		}
-
-
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			//base.OnModelCreating(modelBuilder);
-			
+			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<UserRole>().HasKey(t => new { t.UserId, t.RoleId });
-			modelBuilder.Entity<UserPreference>().HasKey(t => new { t.UserId, t.Name });
+			
+			addIndexFromAttribute(modelBuilder);
+
+			modelBuilder.Entity<RoleInfo>()
+				.Property(t => t.RoleId)
+				.HasIdentityOptions(startValue: 2);
+
+			modelBuilder.Entity<UserInfo>()
+				.Property(t => t.UserId)
+				.HasIdentityOptions(startValue: 12);
+
+
+			/* UserRole */
+			modelBuilder.Entity<UserRole>()
+				.HasKey(t => new { t.UserId, t.RoleId });
 
 			modelBuilder.Entity<UserRole>()
 				.HasOne(p => p.RoleInfo)
@@ -63,7 +70,22 @@ namespace CoreTpl.Dao.Database
 				.WithMany(b => b.UserRole)
 				.HasForeignKey(p => p.UserId);
 
+			modelBuilder.Entity<UserPreference>()
+				.HasKey(t => new { t.UserId, t.Name });
 
+			/* 配置 Npgsql 的 TableInfo */
+			modelBuilder.NpgsqlTableInfo(this);
+
+
+			/* 設定初始資料 */
+			seedData(modelBuilder);
+		}
+
+
+
+
+		private void addIndexFromAttribute(ModelBuilder modelBuilder)
+		{
 			foreach (IMutableEntityType entity in modelBuilder.Model.GetEntityTypes())
 			{
 				foreach (IMutableProperty prop in entity.GetProperties())
@@ -71,10 +93,73 @@ namespace CoreTpl.Dao.Database
 					var attr = prop.PropertyInfo.GetCustomAttribute<IndexAttribute>();
 					if (attr == null) { continue; }
 
-					IMutableIndex index = entity.AddIndex(prop);
+					IMutableIndex index = entity.FindIndex(prop);
+					if (index == null) { index = entity.AddIndex(prop); }
+					
 					index.IsUnique = attr.IsUnique;
 				}
 			}
+		}
+
+
+		/// <summary>設定初始資料</summary>
+		private void seedData(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<RoleInfo>().HasData(
+				new RoleInfo
+				{
+					RoleId = 1,
+					RoleName = "管理者",
+					AllowActList = string.Join(',', ACT.RoleSetting, ACT.UserSetting),
+					UseStatus = UseStatus.Enable.ToString(),
+					CreateBy = 1,
+					CreateDate = DateTimeOffset.Now,
+					ModifyBy = 1,
+					ModifyDate = DateTimeOffset.Now,
+				}
+			);
+
+
+			modelBuilder.Entity<UserInfo>().HasData(
+				new UserInfo
+				{
+					UserId = 1,
+					Account = "system",
+					UserName = "系統",
+					UserType = UserType.System.ToString(),
+					UseStatus = UseStatus.Disable.ToString(),
+					CreateBy = 1,
+					CreateDate = DateTimeOffset.Now,
+					ModifyBy = 1,
+					ModifyDate = DateTimeOffset.Now,
+				},
+				new UserInfo
+				{
+					UserId = 11,
+					Account = "admin",
+					UserName = "Admin",
+					UserType = UserType.Manager.ToString(),
+					UseStatus = UseStatus.Enable.ToString(),
+					Password = "YP50QG5/NT7ZefNQ8vu2ouhpCl+n0bDDKYPR2LP5X2c=", /* Admin1234	*/
+					CreateBy = 1,
+					CreateDate = DateTimeOffset.Now,
+					ModifyBy = 1,
+					ModifyDate = DateTimeOffset.Now,
+				}
+			);
+
+
+			modelBuilder.Entity<UserRole>().HasData(
+				new UserRole
+				{
+					UserId = 11,
+					RoleId = 1,
+					CreateBy = 1,
+					CreateDate = DateTimeOffset.Now,
+					ModifyBy = 1,
+					ModifyDate = DateTimeOffset.Now,
+				}
+			);
 		}
 
 
@@ -108,15 +193,18 @@ namespace CoreTpl.Dao.Database
 		public int RoleId { get; set; }
 
         /// <summary>角色名稱</summary>
+		[MaxLength(256)]
 		public string RoleName { get; set; }
 
         /// <summary>允許權限</summary>
 		public string AllowActList { get; set; }
 
         /// <summary>備註</summary>
+		[MaxLength(1024)]
 		public string RemarkText { get; set; }
 
         /// <summary>使用狀態</summary>
+		[MaxLength(32)]
 		public string UseStatus { get; set; }
 
         /// <summary>建立人</summary>
@@ -221,11 +309,11 @@ namespace CoreTpl.Dao.Database
 	{
 
         /// <summary>使用者Id</summary>
-		[Key]
+		[Key, Index]
 		public int UserId { get; set; }
 
         /// <summary>角色Id</summary>
-		[Key]
+		[Key, Index]
 		public int RoleId { get; set; }
 
         /// <summary>建立人</summary>
@@ -284,26 +372,31 @@ namespace CoreTpl.Dao.Database
 		public int Id { get; set; }
 
         /// <summary>帳號</summary>
+		[MaxLength(256)]
 		public string Account { get; set; }
 
-        /// <summary>登入 IP</summary>
-		[Index]
+		/// <summary>登入 IP</summary>
+		[Index, MaxLength(48)]
 		public string SignInIp { get; set; }
 
 		/// <summary>登入類型</summary>
+		[MaxLength(32)]
 		public string SignInType { get; set; }
 
         /// <summary>狀態代碼</summary>
-		[Index]
+		[Index, MaxLength(32)]
 		public string StatusCode { get; set; }
 
 		/// <summary>狀態訊息</summary>
+		[MaxLength(256)]
 		public string StatusMsg { get; set; }
 
         /// <summary>建立日期</summary>
 		public DateTimeOffset CreateDate { get; set; }
 
 	}
+	 
+
 
 
 }

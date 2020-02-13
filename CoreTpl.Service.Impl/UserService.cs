@@ -63,6 +63,7 @@ namespace CoreTpl.Service.Impl
                 if (user != null) { throw new OrionException("帳號已經存在"); }
             }
 
+            domain.UserType = UserType.Manager;
 
             return _userDao.Save(domain);
         }

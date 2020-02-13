@@ -4,6 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.EntityFrameworkCore.Query;
+
 
 namespace Orion.API.Extensions
 {
@@ -135,6 +141,25 @@ namespace Orion.API.Extensions
 		}
 
 
+
+		private static T getPrivate<T>(this object obj, string privateField) 
+		{
+			return (T)obj?.GetType().GetField(privateField, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(obj);
+		}
+
+		public static string ToSql<TEntity>(this IQueryable<TEntity> query) where TEntity : class
+		{
+			IEnumerator<TEntity> enumerator = query.Provider.Execute<IEnumerable<TEntity>>(query.Expression).GetEnumerator();
+			
+			var relationalQueryContext = enumerator.getPrivate<RelationalQueryContext>("_relationalQueryContext");
+			var relationalCommandCache = enumerator.getPrivate<RelationalCommandCache>("_relationalCommandCache");
+
+#pragma warning disable EF1001 // Internal EF Core API usage.
+			IRelationalCommand command = relationalCommandCache.GetRelationalCommand(relationalQueryContext.ParameterValues);
+#pragma warning restore EF1001 // Internal EF Core API usage.
+
+			return command.CommandText;
+		}
 
 
 

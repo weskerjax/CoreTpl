@@ -78,7 +78,6 @@ namespace CoreTpl.WebApp
         {
             get
             {
-                return new Dictionary<int, string>();
                 return _svc.Role.GetPagination(null, null).List
                     .OrderBy(x => x.RoleName)
                     .ToDictionary(x => x.RoleId, x => x.RoleName);
@@ -90,7 +89,6 @@ namespace CoreTpl.WebApp
         {
             get
             {
-                return new Dictionary<int, string>();
                 return _svc.User.GetPagination(null, null).List
                     .OrderBy(x => x.UserName)
                     .ToDictionary(x => x.UserId, x => x.UserName);
@@ -102,7 +100,6 @@ namespace CoreTpl.WebApp
         {
             get
             {
-                return new Dictionary<int, string>();
                 return _svc.User.GetPagination(null, null).List
                     .OrderBy(x => x.UserName)
                     .ToDictionary(x => x.UserId, x => x.UserName + " " + x.Account);
@@ -154,8 +151,6 @@ namespace CoreTpl.WebApp
         {
             try
             {
-                return new Dictionary<string, bool>();
-
                 string columnStatusJson = _svc.User.GetPreference(userId, "#Orderable_" + name);
                 return columnStatusJson.JsonToObject<Dictionary<string, bool>>();
             }

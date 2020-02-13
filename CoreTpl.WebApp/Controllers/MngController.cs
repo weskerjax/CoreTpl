@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using CoreTpl.Dao.Database;
 using CoreTpl.Enums;
 using CoreTpl.Service;
+using CoreTpl.WebApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Orion.API;
 using Orion.API.Extensions;
+using Orion.API.Models;
 using Orion.Mvc.Extensions;
 
 namespace CoreTpl.WebApp.Controllers
@@ -16,7 +21,8 @@ namespace CoreTpl.WebApp.Controllers
 	public class MngController : Controller
 	{
 		public IServiceContext Svc { private get; set; }
-
+		public TplDbContext Dc { private get; set; }
+		
 
 
 		public IActionResult Index()
@@ -46,9 +52,18 @@ namespace CoreTpl.WebApp.Controllers
 
 
 
-		public IActionResult TableSize()
+		public IActionResult TableSize(PageParams<TableInfo> pageParams)
 		{
-			//TODO TableSize
+			List<TableInfo> tableInfoList = Dc.GetTableInfo();
+			var query = tableInfoList.AsQueryable();
+
+			try
+			{ query = query.AdvancedOrderBy(pageParams.OrderField, pageParams.Descending); }
+			catch
+			{ query = query.OrderBy(x => x.Name); }
+
+			ViewBag.TableInfoList = query.ToList();
+
 			return View();
 		}
 
@@ -59,14 +74,14 @@ namespace CoreTpl.WebApp.Controllers
 		{
 			switch (id)
 			{
-				case "CassetteRebuild": /* 重建 Cassette 綑綁 */
-					//Bundles.RebuildCache();
+				case "DbMigrate": /* 資料庫移轉 (PS: 會建立或更新 Table) */
+					Dc.Database.Migrate();
 					break;
 				default:
 					return Content("Action Not Found.");
 			}
 
-			return View("Rum Complete.");
+			return Content("Rum Complete.");
 		}
 
 

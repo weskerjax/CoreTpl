@@ -44,6 +44,9 @@
 
 	<div class="toolbar-left">
 		<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search fa-lg"></i> 搜尋</button>
+		<a class="btn btn-default btn-sm hidden-xs hidden-sm" href="?Export=true&@Context.Request.QueryString" target="_blank">
+			<i class="fa fa-file-excel-o fa-lg"></i> 匯出
+		</a>
 	</div>
 
     <div class="toolbar-left hidden-xs hidden-sm">		
@@ -65,21 +68,21 @@
 				<th class="RoleName min">@pageHtml.PagerSortFor(x => x.RoleName)</th>
 				<th class="AllowActList">@pageHtml.DisplayNameFor(x => x.AllowActList)</th>
 				<th class="UserIds">@pageHtml.DisplayNameFor(x => x.UserIds)</th>
-				<th class="Statu mins">@pageHtml.PagerSortFor(x => x.UseStatus)</th>
+				<th class="Status min">@pageHtml.PagerSortFor(x => x.UseStatus)</th>
 			</tr>
 		</thead>
 		<tbody>
 			@foreach (var row in pagination.List)
 			{
 				<tr>
-					<td class="min">
+					<td class="">
 						@{ string editUrl = Url.Action("Edit", new { row.RoleId }); }
 						<a class="btn btn-warning btn-xs btn-icon" href="@editUrl"><i class="fa fa-pencil fa-lg"></i></a> 
 					</td>
-					<td class="RoleName min">@row.RoleName</td>
+					<td class="RoleName">@row.RoleName</td>
 					<td class="AllowActList mark-tag">@Html.ShowItem(row.AllowActList, actItems)</td>
 					<td class="UserIds mark-tag">@Html.ShowItem(row.UserIds, Items.UserName)</td>
-					<td class="Status mark-label min">@Html.ShowItem(row.UseStatus)</td>
+					<td class="Status mark-label">@Html.ShowItem(row.UseStatus)</td>
 				</tr>
 			}
 		</tbody>
@@ -92,3 +95,19 @@
 <div class="text-center" ext-horizontal-fix="">
 	<ul class="pagination pagination-sm">@Html.PagerLinks(pagination)</ul>
 </div>
+
+
+
+
+
+@section Export {
+	@if (ViewBag.IsExport != true) { return; }
+
+	@(Html.ExcelExport(pagination.List)
+		.ColumnOrder(tableListId)
+		.Column(row => row.RoleName)
+		.Column(row => Html.ShowItem(row.AllowActList, actItems))
+		.Column(row => Html.ShowItem(row.UserIds, Items.UserName))
+		.Column(row => Html.ShowItem(row.UseStatus))
+	)
+}

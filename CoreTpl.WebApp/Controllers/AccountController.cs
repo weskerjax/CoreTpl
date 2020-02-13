@@ -72,8 +72,6 @@ namespace CoreTpl.WebApp.Controllers
         /// <summary>判斷某IP登入錯誤超過幾次需要驗證</summary>
         private bool isUseCaptchaValid()
         {
-            //TODO
-            return true;
             string remoteIp = HttpContext.Connection.RemoteIpAddress.ToString();
             int errorTimes = Svc.User.GetCurrentSignInErrors(remoteIp);
             return errorTimes >= 3;

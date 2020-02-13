@@ -23,29 +23,10 @@ namespace Orion.API
 		/// </summary>
 		public static bool ClearOldXmlLog() 
 		{
-			return ClearOldXmlLog("elmah/errorLog");
+			return ClearOldXmlLog("elmah/errorLog", 22);
 		}
 
-
-
-		/// <summary>
-		///	清除 Elmah XML 的舊紀錄，
-		///	會根據 &lt;errorLog size=&quot;100&quot; logPath=&quot;~/App_Data/Elmah.Errors&quot; /&gt; 這兩個參數進行清除
-		/// </summary>
-		public static bool ClearOldXmlLog(string sectionName) 
-		{
-			var section = ConfigurationManager.GetSection(sectionName) as Hashtable;
-			if (section == null) { throw new ArgumentException($"Configuration 找不到 {sectionName} 的設定區段"); }
-
-			var logPath = section["logPath"] as string;
-			if (logPath == null) { throw new ArgumentException($"Configuration 找不到 {sectionName} 的 logPath 屬性設定"); }
-
-			var sizeStr = section["size"] as string;
-			int size;
-			if (!int.TryParse(sizeStr, out size)) { size = 1000; }
-
-			return ClearOldXmlLog(logPath, size);
-		}
+		 
 
 
 
@@ -59,7 +40,8 @@ namespace Orion.API
 
 			try
 			{
-				string realpath = HttpContext.Current.Server.MapPath(logPath);
+				//TODO
+				string realpath = ""; // HttpContext.Current.Server.MapPath(logPath);
 
 
 				IEnumerable<FileInfo> files = new DirectoryInfo(realpath)

@@ -1,76 +1,48 @@
 ﻿@{
-    ViewData["Title"] = "Table Size Info";
+    ViewBag.Title = "Table Size Info";
+    string tableListId = "TableInfoList";
 
+    List<TableInfo> tableInfoList = ViewBag.TableInfoList ?? new List<TableInfo>();
+    IHtmlHelper<TableInfo> listHtml = Html.PropertyHelper(tableInfoList);
+
+
+	Func<long, object> showKb = @<span title="@item">@((item / 1024).Comma()) KB</span>;
 }
 
 
-<style>
-	table {
-		border-collapse: collapse;
-		border-spacing: 0;
-	}
-	th, td {
-		border: 1px solid #ddd;
-		padding: 5px 10px;
-		font-size: 14px;
-	}
-	tr:nth-of-type(2n+1) {
-		background-color: #f9f9f9;
-	}
-	td:nth-of-type(n+2) {
-		text-align:right;
-	}
-</style>
+<div class="page-header" ext-horizontal-fix="">
+	<h1>@ViewBag.Title</h1>
+</div>
 
 
-<h2>@ViewData["Title"]</h2>
-
-<table>
-@*
-	
-<%
-	string cntString = ConfigurationManager.ConnectionStrings["STK"].ConnectionString;
-	var table = new DataTable();
-
-	using (var conn = new SqlConnection(cntString))
-	{
-		new SqlDataAdapter(@"
-			CREATE TABLE #T (
-				[Name] VARCHAR(200),
-				[Rows] VARCHAR(20),
-				[Total] VARCHAR(20),
-				[Data] VARCHAR(20),
-				[Index] VARCHAR(20),
-				[Unused] VARCHAR(20)
-			);
-			EXEC sp_MSforeachtable 'INSERT INTO #T EXEC sp_spaceused [?]';
-			SELECT * FROM #T
-			UNION ALL
-			SELECT 
-				'總計' AS [Name],
-				CONCAT(SUM(CAST([Rows] AS INT)),'') AS [Rows],
-				CONCAT(SUM(CAST(REPLACE([Total],'KB','') AS INT)),' KB') AS [Total],
-				CONCAT(SUM(CAST(REPLACE([Data],'KB','') AS INT)),' KB') AS [Data],
-				CONCAT(SUM(CAST(REPLACE([Index],'KB','') AS INT)),' KB') AS [Index],
-				CONCAT(SUM(CAST(REPLACE([Unused],'KB','') AS INT)),' KB') AS [Unused]
-			FROM #T
-			ORDER BY 1
-		", conn).Fill(table);
-	}
-
-		
-	Func<string, string> comma = size => Regex.Replace(size, @"(?<=\d)\d{3}", ",$0", RegexOptions.RightToLeft);
-
-	Action<Func<DataColumn, string>> writeRow = getCell =>
-	{
-		Response.Write("<tr>");
-		foreach (DataColumn item in table.Columns) { Response.Write(getCell(item)); }
-		Response.Write("</tr>\n");
-	};
-
-	writeRow(col => ("<th>" + col.ColumnName + "</th>")); 
-	foreach (DataRow row in table.Rows) { writeRow(col => comma("<td>" + row[col] + "</td>")); } 
-%>
-*@
-
-</table>
+<div id="@tableListId">
+	<table class="table table-striped table-bordered table-condensed table-nowrap table-hover">
+		<thead ext-table-fix="">
+			<tr class="head">
+				<th class="Schema min">@listHtml.PagerSortFor(x => x.Schema)</th>
+				<th class="Name min">@listHtml.PagerSortFor(x => x.Name)</th>
+				<th class="TotalRows min">@listHtml.PagerSortFor(x => x.TotalRows)</th>
+				<th class="TotalBytes min">@listHtml.PagerSortFor(x => x.TotalBytes)</th>
+				<th class="TableBytes min">@listHtml.PagerSortFor(x => x.TableBytes)</th>
+				<th class="IndexBytes min">@listHtml.PagerSortFor(x => x.IndexBytes)</th>
+				<th class="ToastBytes min">@listHtml.PagerSortFor(x => x.ToastBytes)</th>
+				<th class=""></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var row in tableInfoList)
+			{
+				<tr>
+					<td class="Schema left">@row.Schema</td>
+					<td class="Name left">@row.Name</td>
+					<td class="TotalRows right">@row.TotalRows.Comma()</td>					
+					<td class="TotalBytes right">@showKb(row.TotalBytes)</td>
+					<td class="TableBytes right">@showKb(row.TableBytes)</td>
+					<td class="IndexBytes right">@showKb(row.IndexBytes)</td>
+					<td class="ToastBytes right">@showKb(row.ToastBytes)</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+ 

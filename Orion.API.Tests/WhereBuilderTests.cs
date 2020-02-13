@@ -6,6 +6,7 @@ using System.Linq;
 using Xunit;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Orion.API.Tests
 {
@@ -19,9 +20,7 @@ namespace Orion.API.Tests
 
 		public WhereBuilderTests()
 		{
-			string mdfPath = Path.GetFullPath(@"..\..\OrionApi.mdf");
-			string connection = $@"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename={mdfPath};Integrated Security=True";
-			_dc = new OrionApiDbContext(new DbContextOptions<OrionApiDbContext>());
+			_dc = new OrionApiDbContext();
 		}
 
 
@@ -38,7 +37,7 @@ namespace Orion.API.Tests
 			build.WhereBind(x => x.InvoicePrefix, y => y.InvoicePrefix);
 
 			var query = build.Build();
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			Assert.NotEmpty(sql);
 		}
@@ -55,18 +54,18 @@ namespace Orion.API.Tests
 		{
 			get
 			{
-				yield return new object[] { WhereOperator.In, "IN (@p0)" };
-				yield return new object[] { WhereOperator.NotIn, " IN (@p0)" };
-				yield return new object[] { WhereOperator.Equals, " = @p0" };
-				yield return new object[] { WhereOperator.NotEquals, " <> @p0" };
-				yield return new object[] { WhereOperator.Contains, " LIKE @p0" };
-				yield return new object[] { WhereOperator.StartsWith, " LIKE @p0" };
-				yield return new object[] { WhereOperator.EndsWith, " LIKE @p0" };
-				yield return new object[] { WhereOperator.LessThan, " < @p0" };
-				yield return new object[] { WhereOperator.LessEquals, " <= @p0" };
-				yield return new object[] { WhereOperator.GreaterThan, " > @p0" };
-				yield return new object[] { WhereOperator.GreaterEquals, " >= @p0" };
-				yield return new object[] { WhereOperator.Between, "Table(" };
+				yield return new object[] { WhereOperator.In, " IN (" };
+				yield return new object[] { WhereOperator.NotIn, " NOT IN (" };
+				yield return new object[] { WhereOperator.Equals, " = " };
+				yield return new object[] { WhereOperator.NotEquals, " <> " };
+				yield return new object[] { WhereOperator.Contains, " STRPOS" };
+				yield return new object[] { WhereOperator.StartsWith, " LIKE " };
+				yield return new object[] { WhereOperator.EndsWith, " LIKE " };
+				yield return new object[] { WhereOperator.LessThan, " < " };
+				yield return new object[] { WhereOperator.LessEquals, " <= " };
+				yield return new object[] { WhereOperator.GreaterThan, " > " };
+				yield return new object[] { WhereOperator.GreaterEquals, " >= " };
+				yield return new object[] { WhereOperator.Between, " i\r\nORDER" };
 			}
 		}
 
@@ -83,7 +82,7 @@ namespace Orion.API.Tests
 			build.WhereBind(x => x.InvoicePrefix, y => y.InvoicePrefix);
 
 			var query = build.Build();
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			Assert.Contains(expected, sql);
 		}
@@ -97,18 +96,18 @@ namespace Orion.API.Tests
 		{
 			get
 			{
-				yield return new object[] { WhereOperator.In, "IN (@p0" };
-				yield return new object[] { WhereOperator.NotIn, " IN (@p0" };
-				yield return new object[] { WhereOperator.Equals, " = @p0" };
-				yield return new object[] { WhereOperator.NotEquals, " <> @p0" };
-				yield return new object[] { WhereOperator.Contains, "Table(" };
-				yield return new object[] { WhereOperator.StartsWith, "Table(" };
-				yield return new object[] { WhereOperator.EndsWith, "Table(" };
-				yield return new object[] { WhereOperator.LessThan, " < @p0" };
-				yield return new object[] { WhereOperator.LessEquals, " <= @p0" };
-				yield return new object[] { WhereOperator.GreaterThan, " > @p0" };
-				yield return new object[] { WhereOperator.GreaterEquals, " >= @p0" };
-				yield return new object[] { WhereOperator.Between, " >= @p0" };
+				yield return new object[] { WhereOperator.In, "IN (" };
+				yield return new object[] { WhereOperator.NotIn, " NOT IN (" };
+				yield return new object[] { WhereOperator.Equals, " = " };
+				yield return new object[] { WhereOperator.NotEquals, " <> " };
+				yield return new object[] { WhereOperator.Contains, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.StartsWith, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.EndsWith, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.LessThan, " < " };
+				yield return new object[] { WhereOperator.LessEquals, " <= " };
+				yield return new object[] { WhereOperator.GreaterThan, " > " };
+				yield return new object[] { WhereOperator.GreaterEquals, " >= " };
+				yield return new object[] { WhereOperator.Between, " >= " };
 			}
 		}
 
@@ -125,7 +124,7 @@ namespace Orion.API.Tests
 			build.WhereBind(x => x.ProductQty, y => y.InvoiceNum);
 
 			var query = build.Build();
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			Assert.Contains(expected, sql);
 		}
@@ -136,22 +135,24 @@ namespace Orion.API.Tests
 
 		/*===========================================================================*/
 
+
+
 		public static IEnumerable<object[]> DateTimeValueTest_Data
 		{
 			get
 			{
-				yield return new object[] { WhereOperator.In, "IN (@p0" };
-				yield return new object[] { WhereOperator.NotIn, " IN (@p0" };
-				yield return new object[] { WhereOperator.Equals, " = @p0" };
-				yield return new object[] { WhereOperator.NotEquals, " <> @p0" };
-				yield return new object[] { WhereOperator.Contains, "Table(" };
-				yield return new object[] { WhereOperator.StartsWith, "Table(" };
-				yield return new object[] { WhereOperator.EndsWith, "Table(" };
-				yield return new object[] { WhereOperator.LessThan, " < @p0" };
-				yield return new object[] { WhereOperator.LessEquals, " <= @p0" };
-				yield return new object[] { WhereOperator.GreaterThan, " > @p0" };
-				yield return new object[] { WhereOperator.GreaterEquals, " >= @p0" };
-				yield return new object[] { WhereOperator.Between, " >= @p0" };
+				yield return new object[] { WhereOperator.In, " IN (" };
+				yield return new object[] { WhereOperator.NotIn, " NOT IN (" };
+				yield return new object[] { WhereOperator.Equals, " = " };
+				yield return new object[] { WhereOperator.NotEquals, " <> " };
+				yield return new object[] { WhereOperator.Contains, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.StartsWith, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.EndsWith, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.LessThan, " < " };
+				yield return new object[] { WhereOperator.LessEquals, " <= " };
+				yield return new object[] { WhereOperator.GreaterThan, " > " };
+				yield return new object[] { WhereOperator.GreaterEquals, " >= " };
+				yield return new object[] { WhereOperator.Between, " >= " };
 			}
 		}
 
@@ -168,12 +169,24 @@ namespace Orion.API.Tests
 			build.WhereBind(x => x.ModifyDate, y => y.ModifyDate);
 
 			var query = build.Build();
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			Assert.Contains(expected, sql);
 		}
 
 
+		[Fact]
+		public void DateTimeRunTest()
+		{
+			Expression<Func<InvoiceIssue, bool>> predicate = x => x.ModifyDate == DateTime.Today;
+
+			var values = new List<DateTime?> { DateTime.Today, DateTime.Now };
+			var query = _dc.InvoiceIssue.Where(x => values .Contains( x.ModifyDate ));
+			//var list = query.ToList();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
+
+			Assert.True(true);
+		}
 
 
 
@@ -183,18 +196,18 @@ namespace Orion.API.Tests
 		{
 			get
 			{
-				yield return new object[] { WhereOperator.In, "IN (@p0" };
-				yield return new object[] { WhereOperator.NotIn, " IN (@p0" };
-				yield return new object[] { WhereOperator.Equals, " = @p0" };
-				yield return new object[] { WhereOperator.NotEquals, " <> @p0" };
-				yield return new object[] { WhereOperator.Contains, "Table(" };
-				yield return new object[] { WhereOperator.StartsWith, "Table(" };
-				yield return new object[] { WhereOperator.EndsWith, "Table(" };
-				yield return new object[] { WhereOperator.LessThan, " < @p0" };
-				yield return new object[] { WhereOperator.LessEquals, " <= @p0" };
-				yield return new object[] { WhereOperator.GreaterThan, " > @p0" };
-				yield return new object[] { WhereOperator.GreaterEquals, " >= @p0" };
-				yield return new object[] { WhereOperator.Between, " >= @p0" };
+				yield return new object[] { WhereOperator.In, " IN (" };
+				yield return new object[] { WhereOperator.NotIn, " NOT IN (" };
+				yield return new object[] { WhereOperator.Equals, " = " };
+				yield return new object[] { WhereOperator.NotEquals, " <> " };
+				yield return new object[] { WhereOperator.Contains, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.StartsWith, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.EndsWith, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.LessThan, " < " };
+				yield return new object[] { WhereOperator.LessEquals, " <= " };
+				yield return new object[] { WhereOperator.GreaterThan, " > " };
+				yield return new object[] { WhereOperator.GreaterEquals, " >= " };
+				yield return new object[] { WhereOperator.Between, " >= " };
 			}
 		}
 
@@ -211,7 +224,7 @@ namespace Orion.API.Tests
 			build.WhereBind(x => x.Sum, y => y.Total);
 
 			var query = build.Build();
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			Assert.Contains(expected, sql);
 		}
@@ -226,18 +239,18 @@ namespace Orion.API.Tests
 		{
 			get
 			{
-				yield return new object[] { WhereOperator.In, "IN (@p0" };
-				yield return new object[] { WhereOperator.NotIn, " IN (@p0" };
-				yield return new object[] { WhereOperator.Equals, "EXISTS(" };
-				yield return new object[] { WhereOperator.NotEquals, "NOT (EXISTS(" };
-				yield return new object[] { WhereOperator.Contains, "Table(" };
-				yield return new object[] { WhereOperator.StartsWith, "Table(" };
-				yield return new object[] { WhereOperator.EndsWith, "Table(" };
-				yield return new object[] { WhereOperator.LessThan, " < @p0" };
-				yield return new object[] { WhereOperator.LessEquals, " <= @p0" };
-				yield return new object[] { WhereOperator.GreaterThan, " > @p0" };
-				yield return new object[] { WhereOperator.GreaterEquals, " >= @p0" };
-				yield return new object[] { WhereOperator.Between, " >= @p0" };
+				yield return new object[] { WhereOperator.In, "IN (" };
+				yield return new object[] { WhereOperator.NotIn, " IN (" };
+				yield return new object[] { WhereOperator.Equals, "EXISTS (" };
+				yield return new object[] { WhereOperator.NotEquals, "NOT (EXISTS (" };
+				yield return new object[] { WhereOperator.Contains, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.StartsWith, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.EndsWith, " i\r\nORDER" };
+				yield return new object[] { WhereOperator.LessThan, " < " };
+				yield return new object[] { WhereOperator.LessEquals, " <= " };
+				yield return new object[] { WhereOperator.GreaterThan, " > " };
+				yield return new object[] { WhereOperator.GreaterEquals, " >= " };
+				yield return new object[] { WhereOperator.Between, " >= " };
 			}
 		}
 
@@ -254,7 +267,7 @@ namespace Orion.API.Tests
 			build.WhereBind<int?>(x => x.ProductQty, y => y.InvoiceIssueItems.Select(z => (int?)z.Qty));
 
 			var query = build.Build();
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			Assert.Contains(expected, sql);
 		}
@@ -277,7 +290,7 @@ namespace Orion.API.Tests
 
 
 			var query = _dc.InvoiceIssue.WhereBuilder(param)
-				.WhereBind(x => x.UseStatus.ToString(), y => y.InvoicePrefix)
+				.WhereBind(x => x.UseStatus, y => y.InvoicePrefix)
 				.WhereBind(x => x.InvoicePrefix,	y => y.InvoicePrefix)
 				.WhereBind(x => x.ProductQty, y => y.InvoiceId)
 				.WhereBind(x => x.ModifyDate,		y => y.ModifyDate)
@@ -286,7 +299,7 @@ namespace Orion.API.Tests
 				.WhereBind(x => x.Sum,			y => y.InvoiceIssueItems.Select(z => z.Price))
 				.Build();
 
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			query.ToList();
 
@@ -311,7 +324,7 @@ namespace Orion.API.Tests
 				.WhereBind(x => x.RoleIds, y => y.InvoiceIssueItems.Select(z => z.Qty))
 				.Build();
 
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			query.ToList();
 
@@ -334,11 +347,11 @@ namespace Orion.API.Tests
 
 
 			var query = _dc.InvoiceIssue.WhereBuilder(param)
-				.WhereBind(x => x.UseStatus.ToString(), y => y.InvoicePrefix)
+				.WhereBind(x => x.UseStatus, y => y.InvoicePrefix)
 				.WhereBind(x => x.ProductQty * 100, y => y.InvoiceId)
 				.Build();
 
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			query.ToList();
 
@@ -359,11 +372,11 @@ namespace Orion.API.Tests
 
 
 			var query = _dc.InvoiceIssue.WhereBuilder(param)
-				.WhereBind(x => x.UseStatus.ToString(), y => y.InvoicePrefix)
+				.WhereBind(x => x.UseStatus, y => y.InvoicePrefix)
 				.WhereBind(x => x.InvoicePrefix, y => y.InvoicePrefix)
 				.Build();
 
-			var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
 			query.ToList();
 
@@ -384,9 +397,9 @@ namespace Orion.API.Tests
                 .WhereBind(x => x.ModifyDate2.DateTime, y => y.ModifyDate)
                 .Build();
 
-            var sql = query.ToString();
+			var sql = query.OrderBy(x => x.CreateBy).ToSql();
 
-            query.ToList();
+			query.ToList();
 
 
             Assert.True(true);

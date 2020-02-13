@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Orion.API.Extensions.Tests
 {
@@ -13,9 +14,7 @@ namespace Orion.API.Extensions.Tests
 
 		public WhereHasExtensionsTests()
 		{
-			string mdfPath = Path.GetFullPath(@"..\..\OrionApi.mdf");
-			string connection = $@"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename={mdfPath};Integrated Security=True";
-			_dc = new OrionApiDbContext(new DbContextOptions<OrionApiDbContext>());
+			_dc = new OrionApiDbContext();
 		}
 
 
@@ -25,23 +24,23 @@ namespace Orion.API.Extensions.Tests
 			get
 			{
 				yield return new object[] { 
-					new InvoiceIssueDomain { InvoicePrefix = "FF" }, " = @p0" 
+					new InvoiceIssueDomain { InvoicePrefix = "FF" }, "WHERE",  (Action<string, string>)Assert.Contains
 				};
 				yield return new object[] { 
-					new InvoiceIssueDomain { InvoicePrefix = "" }, "Table(" 
+					new InvoiceIssueDomain { InvoicePrefix = "" }, "WHERE", (Action<string, string>)Assert.DoesNotContain
 				};
 			}
 		}
 
 		[Theory]
 		[MemberData(nameof(RunTest_Data))]
-		public void RunTest(InvoiceIssueDomain domain, string expected)
+		public void RunTest(InvoiceIssueDomain domain, string expected, Action<string, string> assert)
 		{
 
 			var query = _dc.InvoiceIssue.WhereHas(x => x.InvoicePrefix == domain.InvoicePrefix);
-			var sql = query.ToString();
+			var sql = query.ToSql();
 
-			Assert.Contains(expected, sql);	
+			assert(expected, sql);	
 		}
 
 
@@ -62,9 +61,9 @@ namespace Orion.API.Extensions.Tests
 			var domain = new InvoiceIssueDomain();
 
 			var query = _dc.InvoiceIssue.WhereHas(x => x.InvoicePrefix == domain.InvoicePrefix.ToString());
-			var sql = query.ToString();
+			var sql = query.ToSql();
 
-			Assert.Contains("Table(", sql);
+			Assert.DoesNotContain("WHERE", sql);
 		}
 
 

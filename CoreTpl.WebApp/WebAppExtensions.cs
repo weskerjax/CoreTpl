@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Security.Principal;
 using System.Security.Claims;
 using Orion.API;
+using Microsoft.AspNetCore.Http;
 
 namespace CoreTpl.WebApp
 {
@@ -46,8 +47,8 @@ namespace CoreTpl.WebApp
 			string disposition = "attachment; filename*=UTF-8''" + HttpUtility.UrlEncode(downloadName);
 			controller.Response.ContentType = "application/octet-stream";
 			controller.Response.Headers["Content-Disposition"] = disposition;
-			controller.ViewData["IsExport"] = true;
-			controller.ViewData["Layout"] = "_ExcelLayout";
+			controller.ViewBag.IsExport = true;
+			controller.ViewBag.Layout = "_ExcelLayout";
 
 			return new ViewResult
 			{
@@ -72,11 +73,11 @@ namespace CoreTpl.WebApp
 
 
 
-		public static Dictionary<string, bool> ColumnStatus(this RazorPage page, string name)
+		private static Dictionary<string, bool> getColumnStatus(HttpContext httpContext, string name)
 		{
-			var provider = page.Context.RequestServices.GetService<IOptionItemsProvider>();
+			var provider = httpContext.RequestServices.GetService<IOptionItemsProvider>();
 
-			int userId = page.User.GetUserId();
+			int userId = httpContext.User.GetUserId();
 			Dictionary<string, bool> columnStatus = provider.GetColumnStatus(userId, name);
 			if (columnStatus != null) { return columnStatus; }
 
@@ -84,24 +85,20 @@ namespace CoreTpl.WebApp
 		}
 
 
-		public static List<string> ColumnOrder(this RazorPage page, string name)
+		public static Dictionary<string, bool> ColumnStatus(this RazorPage page, string name)
 		{
-			Dictionary<string, bool> columnStatus = ColumnStatus(page, name);
-			if (columnStatus == null) { return new List<string>(); }
-
-			List<string> columns = columnStatus.Where(y => y.Value).ToList(y => y.Key);
-			return columns;
+			return getColumnStatus(page.Context, name);
 		}
 
-
-		public static List<string> ColumnOrder<T>(this RazorPage page, string name)
+		
+		/// <summary></summary>
+		public static HtmlExcelExport<T> ColumnOrder<T>(this HtmlExcelExport<T> htmlExcelExport, string name) where T : class
 		{
-			List<string> columns = ColumnOrder(page, name);
+			Dictionary<string, bool> columnStatus = getColumnStatus(htmlExcelExport.HttpContext, name); 
+			List<string> columns = columnStatus.NullToEmpty().Where(y => y.Value).ToList(y => y.Key);
 
-			if (columns == null || columns.Count == 0)
-			{ columns = typeof(T).GetProperties().ToList(prop => prop.Name); }
-
-			return columns;
+			htmlExcelExport.ColumnOrder(columns);
+			return htmlExcelExport;
 		}
 
 

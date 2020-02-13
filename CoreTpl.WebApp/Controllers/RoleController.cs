@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CoreTpl.Domain;
 using CoreTpl.Enums;
 using CoreTpl.Service;
@@ -24,15 +25,17 @@ namespace CoreTpl.WebApp.Controllers
 
 
 
-        public IActionResult List(WhereParams<RoleDomain> findParam, PageParams<RoleDomain> pageParams)
+
+        [TplSearchRemember]
+        public IActionResult List(WhereParams<RoleDomain> findParam, PageParams<RoleDomain> pageParams, bool export = false)
         {
+            if (export) { pageParams.PageIndex = 1; pageParams.PageSize = -1; }
+
             Pagination<RoleDomain> domainPage = Svc.Role.GetPagination(findParam, pageParams);
             ViewBag.Pagination = domainPage;
 
-            //TODO delete
-            //ViewBag.Pagination = Pagination<RoleDomain>.Empty();
-
-            return View();
+            if (!export) { return View(); }
+            return this.ExcelView($"角色-{DateTime.Now:yyyyMMddHHmmss}.xls");
         }
 
 

@@ -4,17 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Orion.API.Tests
 {
-
-
 	public class OrionApiDbContext : DbContext
 	{
-		public OrionApiDbContext(DbContextOptions<OrionApiDbContext> options) : base(options)
-		{
+		public OrionApiDbContext() : base(new DbContextOptions<OrionApiDbContext> ()) { }
 
-		}
 
 		public DbSet<InvoiceIssue> InvoiceIssue { get; set; }
 		public DbSet<InvoiceIssueItems> InvoiceIssueItems { get; set; }
@@ -24,14 +21,26 @@ namespace Orion.API.Tests
 
 		/*-----------------------------------------------------*/
 
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			optionsBuilder.UseNpgsql("Host=localhost;Database=Orion_API_Tests;Username=postgres;Password=p@ssw0rd");
+		}
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
 		}
 
+	}
 
 
+	public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<OrionApiDbContext>
+	{
+		public OrionApiDbContext CreateDbContext(string[] args)
+		{
+			return new OrionApiDbContext();
+		}
 	}
 
 

@@ -1,42 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using CoreTpl.Dao.Database;
 using CoreTpl.Domain;
+using CoreTpl.Enums;
 using CoreTpl.Service;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Orion.API;
 using Orion.API.Extensions;
 using Orion.Mvc.Filters;
 using Orion.Mvc.ModelBinder;
 using Orion.Mvc.UI;
-using Orion.Mvc.Extensions;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Extensions.Logging;
-using Orion.Mvc.UI;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Caching.Memory;
-using CoreTpl.Enums;
-using Microsoft.AspNetCore.Localization;
-using System.Globalization;
 
 namespace CoreTpl.WebApp
 {
@@ -63,8 +55,9 @@ namespace CoreTpl.WebApp
 		{
 			//services.AddControllers();
 			//services.AddControllersWithViews();
+			//services.AddRazorPages();
+
 			services.AddOptions();
-			services.AddRazorPages();
 
 			services.AddHttpContextAccessor();
 
@@ -93,15 +86,9 @@ namespace CoreTpl.WebApp
 			services.AddMemoryCache(); /* 增加記憶體快取 */
 			//services.AddSession(); /* 增加 Session */
 
-			services.AddHealthChecks(); /* 增加健康情況檢查 */
+			//services.AddHealthChecks(); /* 增加健康情況檢查 */
 
-			services.AddAuthorization();
-			//services.AddAuthorization(options =>
-			//{
-			//	options.DefaultPolicy = new AuthorizationPolicyBuilder()
-			//	  .RequireAuthenticatedUser()
-			//	  .Build();
-			//});
+			services.AddAuthorization(); /* 配置權限驗證處理 */
 
 
 			/* 配置登入者處理 */
@@ -120,7 +107,8 @@ namespace CoreTpl.WebApp
 						return Task.FromResult(0);
 					};
 				});
-			 
+
+			/* 用 MemoryCache 來紀錄登入者資料 */
 			services.AddSingleton<IPostConfigureOptions<CookieAuthenticationOptions>, ConfigureSessionAuthentication>();
 
 
@@ -131,12 +119,15 @@ namespace CoreTpl.WebApp
 					options.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider());
 					options.ModelBinderProviders.Insert(0, new WhereParamsModelBinderProvider());
 #if DEBUG
-					//options.Filters.Add(new DevelopAuthorizationFilter<ACT>());
+					options.Filters.Insert(0, new DevelopAuthorizationFilter<ACT>());
 #endif
 					options.Filters.Add(new UseViewPageActionFilter());
 					options.Filters.Add(new ExceptionMessageActionFilter());
 					options.Filters.Add(new PageParamsActionFilter("PageSize", 50)); /* 換頁參數 */
 				})
+#if DEBUG
+				.AddRazorRuntimeCompilation() /* 啟用 Razor Runtime 編譯 */
+#endif
 				.AddControllersAsServices();
 
 		}
@@ -245,9 +236,7 @@ namespace CoreTpl.WebApp
 				).RequireAuthorization();
 				
 				/* 配置健康情況檢查的 Routing */
-				endpoints.MapHealthChecks("/healthz", new HealthCheckOptions() { });
-				//endpoints.MapHealthChecks("/healthz")
-				//	.RequireAuthorization(new AuthorizeAttribute() { Roles = "admin", });
+				//endpoints.MapHealthChecks("/healthz", new HealthCheckOptions() { });
 
 			});
 		}
@@ -275,4 +264,9 @@ namespace CoreTpl.WebApp
 
 
 	}
+
+
+
+
+
 }

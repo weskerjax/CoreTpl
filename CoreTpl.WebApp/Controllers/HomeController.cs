@@ -24,6 +24,9 @@ namespace CoreTpl.WebApp.Controllers
             //return RedirectToAction("Login", "Account");
             //return RedirectToAction("Create", "Role");
             return RedirectToAction("List", "Role");
+            //return RedirectToAction("TableSize", "Mng");
+
+            
 
             return View();
         }
