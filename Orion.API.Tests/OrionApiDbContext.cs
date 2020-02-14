@@ -10,7 +10,27 @@ namespace Orion.API.Tests
 {
 	public class OrionApiDbContext : DbContext
 	{
-		public OrionApiDbContext() : base(new DbContextOptions<OrionApiDbContext> ()) { }
+
+		public static OrionApiDbContext CreateUseSqlServer()
+		{
+			var builder = new DbContextOptionsBuilder<OrionApiDbContext>();
+			builder.UseSqlServer("Data Source=localhost;Initial Catalog=Orion_API_Tests;Integrated Security=True");
+			return new OrionApiDbContext(builder.Options);
+		}
+
+		public static OrionApiDbContext CreateUseNpgsql() 
+		{
+			var builder = new DbContextOptionsBuilder<OrionApiDbContext>();
+			builder.UseNpgsql("Host=localhost;Database=Orion_API_Tests;Username=postgres;Password=p@ssw0rd");
+			return new OrionApiDbContext(builder.Options);
+		}
+
+
+
+		/*-----------------------------------------------------*/
+
+
+		public OrionApiDbContext(DbContextOptions<OrionApiDbContext> options) : base(options) { }
 
 
 		public DbSet<InvoiceIssue> InvoiceIssue { get; set; }
@@ -18,20 +38,11 @@ namespace Orion.API.Tests
 		public DbSet<InventoryTemp> InventoryTemp { get; set; }
 
 
-
-		/*-----------------------------------------------------*/
-
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.UseNpgsql("Host=localhost;Database=Orion_API_Tests;Username=postgres;Password=p@ssw0rd");
-		}
-
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
 		}
-
 	}
 
 
@@ -39,7 +50,7 @@ namespace Orion.API.Tests
 	{
 		public OrionApiDbContext CreateDbContext(string[] args)
 		{
-			return new OrionApiDbContext();
+			return OrionApiDbContext.CreateUseNpgsql();
 		}
 	}
 

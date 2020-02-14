@@ -20,7 +20,7 @@ namespace Orion.API.Tests
 
 		public WhereBuilderTests()
 		{
-			_dc = new OrionApiDbContext();
+			_dc = OrionApiDbContext.CreateUseNpgsql();
 		}
 
 
@@ -407,30 +407,26 @@ namespace Orion.API.Tests
 
 
 
+
+		/*===========================================================================*/
+
+		public class InvoiceIssueDomain
+		{
+			public int? ProductQty { get; set; }
+			public decimal Sum { get; set; }
+			public string InvoicePrefix { get; set; }
+			public UseStatus UseStatus { get; set; }
+			public int ModifyBy { get; set; }
+			public DateTime ModifyDate { get; set; }
+			public List<int> RoleIds { get; set; }
+
+			public DateTimeOffset ModifyDate2 { get; set; }
+
+		}
+
+
+
     }
 
-
-
-
-    public enum UseStatus
-	{
-		Enable,
-		Disable,
-
-	}
-
-	public class InvoiceIssueDomain
-	{
-		public int? ProductQty { get; set; }
-		public decimal Sum { get; set; }
-		public string InvoicePrefix { get; set; }
-		public UseStatus UseStatus { get; set; }
-		public int ModifyBy { get; set; }
-		public DateTime ModifyDate { get; set; }
-		public List<int> RoleIds { get; set; }
-
-        public DateTimeOffset ModifyDate2 { get; set; }
-
-    }
 
 }

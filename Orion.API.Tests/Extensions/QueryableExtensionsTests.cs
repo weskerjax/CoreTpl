@@ -16,7 +16,7 @@ namespace Orion.API.Extensions.Tests
 
         public QueryableExtensionsTests()
         {
-			_dc = new OrionApiDbContext();
+			_dc = OrionApiDbContext.CreateUseNpgsql();
         }
 
 

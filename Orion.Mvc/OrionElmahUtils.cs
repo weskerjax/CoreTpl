@@ -40,7 +40,7 @@ namespace Orion.API
 
 			try
 			{
-				//TODO
+				//TODO 清除 Elmah 
 				string realpath = ""; // HttpContext.Current.Server.MapPath(logPath);
 
 

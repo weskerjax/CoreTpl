@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using Xunit;
+using Orion.API.Models;
 
 namespace Orion.API.Tests
 {
@@ -143,26 +144,26 @@ namespace Orion.API.Tests
 
 
 
-	}
+	    public class IssueDomain
+        {
+            public decimal Sum { get; set; }
+            public string InvoicePrefix { get; set; }
+            public UseStatus UseStatus { get; set; }
+        }
 
 
 
-	public class IssueDomain
-    {
-        public decimal Sum { get; set; }
-        public string InvoicePrefix { get; set; }
-        public UseStatus UseStatus { get; set; }
-    }
+	    public enum Floor
+	    {
+		    None,
+		    F1,
+		    F2,
+		    F3,
+		    F4,
+	    }
 
 
 
-	public enum Floor
-	{
-		None,
-		F1,
-		F2,
-		F3,
-		F4,
 	}
 
 
