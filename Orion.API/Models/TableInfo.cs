@@ -21,6 +21,9 @@
 		/// <summary></summary>
 		public long IndexBytes { get; set; }
 
+		/// <summary></summary>
+		public long UnusedBytes { get; set; }
+
 		/// <summary>超大屬性存儲技術 (The Oversized-Attribute Storage Technique)</summary>
 		public long ToastBytes { get; set; }
 	}

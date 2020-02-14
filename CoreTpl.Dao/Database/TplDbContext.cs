@@ -74,7 +74,7 @@ namespace CoreTpl.Dao.Database
 				.HasKey(t => new { t.UserId, t.Name });
 
 			/* 配置 Npgsql 的 TableInfo */
-			modelBuilder.NpgsqlTableInfo(this);
+			modelBuilder.TableInfoUseNpgsql(this);
 
 
 			/* 設定初始資料 */

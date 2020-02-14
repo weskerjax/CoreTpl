@@ -6,7 +6,19 @@
     IHtmlHelper<TableInfo> listHtml = Html.PropertyHelper(tableInfoList);
 
 
-	Func<long, object> showKb = @<span title="@item">@((item / 1024).Comma()) KB</span>;
+    var sum = new TableInfo 
+	{
+		Name = "總計",
+		TotalRows  = tableInfoList.Sum(x => x.TotalRows),
+		TotalBytes = tableInfoList.Sum(x => x.TotalBytes ),
+		TableBytes = tableInfoList.Sum(x => x.TableBytes ),
+		IndexBytes = tableInfoList.Sum(x => x.IndexBytes ),
+		ToastBytes = tableInfoList.Sum(x => x.ToastBytes ),
+		UnusedBytes= tableInfoList.Sum(x => x.UnusedBytes),
+	};
+
+
+    Func<long, object> showKb = @<span title="@item">@((item / 1024).Comma()) KB</span>;
 }
 
 
@@ -26,6 +38,7 @@
 				<th class="TableBytes min">@listHtml.PagerSortFor(x => x.TableBytes)</th>
 				<th class="IndexBytes min">@listHtml.PagerSortFor(x => x.IndexBytes)</th>
 				<th class="ToastBytes min">@listHtml.PagerSortFor(x => x.ToastBytes)</th>
+				<th class="UnusedBytes min">@listHtml.PagerSortFor(x => x.UnusedBytes)</th>
 				<th class=""></th>
 			</tr>
 		</thead>
@@ -40,9 +53,22 @@
 					<td class="TableBytes right">@showKb(row.TableBytes)</td>
 					<td class="IndexBytes right">@showKb(row.IndexBytes)</td>
 					<td class="ToastBytes right">@showKb(row.ToastBytes)</td>
+					<td class="UnusedBytes right">@showKb(row.UnusedBytes)</td>
 				</tr>
 			}
 		</tbody>
+		<tfoot>
+			<tr>
+				<td class="Schema left"></td>
+				<td class="Name left">@sum.Name</td>
+				<td class="TotalRows right">@sum.TotalRows.Comma()</td>					
+				<td class="TotalBytes right">@showKb(sum.TotalBytes)</td>
+				<td class="TableBytes right">@showKb(sum.TableBytes)</td>
+				<td class="IndexBytes right">@showKb(sum.IndexBytes)</td>
+				<td class="ToastBytes right">@showKb(sum.ToastBytes)</td>
+				<td class="UnusedBytes right">@showKb(sum.UnusedBytes)</td>
+			</tr>
+		</tfoot>
 	</table>
 </div>
  
