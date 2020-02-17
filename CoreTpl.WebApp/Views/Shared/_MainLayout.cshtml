@@ -9,10 +9,10 @@
 
 	<title>@ViewBag.Title | @Items.TplConfig.Title</title>
 
-	<partial name="_Styles" />
+	<link rel="stylesheet" href="~/Styles/Bundle.css" />
 	@RenderSection("Styles", required: false)
 	
-	<partial name="_Scripts" />
+    <script src="~/Scripts/bundle.js"></script>
 	<script src="~/Scripts/pages/main-layout.js"></script>
 </head>
 <body id="MainLayout" class="@menuToggle">

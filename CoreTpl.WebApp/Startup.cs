@@ -35,6 +35,7 @@ namespace CoreTpl.WebApp
 	public class Startup
 	{
 		private readonly IConfigurationRoot _config;
+		private readonly IWebHostEnvironment _env;
 
 		public Startup(IWebHostEnvironment env)
 		{
@@ -45,6 +46,7 @@ namespace CoreTpl.WebApp
 				.AddEnvironmentVariables();
 
 			_config = builder.Build();
+			_env = env;
 		}
 
 
@@ -129,6 +131,62 @@ namespace CoreTpl.WebApp
 				.AddRazorRuntimeCompilation() /* ±Ò¥Î Razor Runtime ½sÄ¶ */
 #endif
 				.AddControllersAsServices();
+
+
+
+			/* JS, CSS ¸i¸j */
+			services.AddWebOptimizer(pipeline =>
+			{
+				pipeline.AddCssBundle("/Styles/Bundle.css", new[]
+				{
+					"Scripts/bootstrap-3.3.6/css/bootstrap.css",
+					"Scripts/bootstrap-datetimepicker-1.0.1/bootstrap-datetimepicker.css",
+					"Scripts/jquery.whereBuilder/jquery.whereBuilder.css",
+					"Styles/extensions.css",
+					"Styles/layout.css",
+					"Styles/theme-gradient/theme.css",
+					"Styles/mark-label.css",
+				});
+
+				pipeline.AddJavaScriptBundle("/Scripts/bundle.js", new[]
+				{
+					"Scripts/modernizr-2.6.2/modernizr-2.6.2.js",
+					"Scripts/moment-2.7.0/moment-2.7.0.js",
+					"Scripts/respond-1.2.0/respond.js",
+					"Scripts/jquery-1.12.2/jquery-1.12.2.js",
+					"Scripts/jquery.cookie-1.4.1/jquery.cookie-1.4.1.js",
+					"Scripts/jquery.tmpl-1.0.0/jquery.tmpl-1.0.0.js",
+					"Scripts/jquery.mousewheel-3.1.12/jquery.mousewheel-3.1.12.js",
+					"Scripts/jquery.validate-1.12.0/jquery.validate-1.12.0.js",
+					"Scripts/jquery.validate-1.12.0/jquery.validate.additional-1.12.0.js",
+					"Scripts/jquery.validate-1.12.0/jquery.validate.unobtrusive.js",
+					"Scripts/jquery-ui-1.12.1.custom/jquery-ui-1.12.1.custom.js",
+					"Scripts/jquery.whereBuilder/jquery.whereBuilder.js",
+					"Scripts/bootstrap-3.3.6/js/bootstrap.js",
+					"Scripts/bootstrap-datetimepicker-1.0.1/bootstrap-datetimepicker.js",
+					"Scripts/bootstrap-typeahead-1.0.0/bootstrap-typeahead.js",
+					"Scripts/main/polyfill.js",
+					"Scripts/main/float-compute.js",
+					"Scripts/main/jquery.barcodein.js",
+					"Scripts/main/jquery.konami.js",
+					"Scripts/main/jquery.ezAjax.js",
+					"Scripts/main/jquery.liveInterval.js",
+					"Scripts/main/iframeDialog.js",
+					"Scripts/main/Dialog.js",
+					"Scripts/main/StatusMsg.js",
+					"Scripts/main/ext-picker.js",
+					"Scripts/main/ext-typeahead.js",
+					"Scripts/main/ext-visible-selector.js",
+					"Scripts/main/ext-orderable-selector2.js",
+					"Scripts/main/typing-limit.js",
+					"Scripts/main/title-tip.js",
+					"Scripts/main/global.js",
+				});
+			});
+
+
+			if (_env.IsDevelopment())
+			{ services.AddWebOptimizer(minifyJavaScript: false, minifyCss: false); }
 
 		}
 
@@ -239,6 +297,10 @@ namespace CoreTpl.WebApp
 				//endpoints.MapHealthChecks("/healthz", new HealthCheckOptions() { });
 
 			});
+
+
+			/* JS, CSS ¸i¸j */
+			app.UseWebOptimizer();
 		}
 
 

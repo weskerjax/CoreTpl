@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -184,42 +185,48 @@ namespace CoreTpl.Dao.Database
 
 
     /// <summary>角色</summary>
-	[Table(nameof(RoleInfo))]
+	[Table(nameof(RoleInfo)), Description("角色")]
 	public class RoleInfo
 	{
 
         /// <summary>角色Id</summary>
-		[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Description("角色Id")]
 		public int RoleId { get; set; }
 
         /// <summary>角色名稱</summary>
-		[MaxLength(256)]
+		[MaxLength(256), Description("角色名稱")]
 		public string RoleName { get; set; }
 
         /// <summary>允許權限</summary>
+		[Description("允許權限")]
 		public string AllowActList { get; set; }
 
         /// <summary>備註</summary>
-		[MaxLength(1024)]
+		[MaxLength(1024), Description("備註")]
 		public string RemarkText { get; set; }
 
         /// <summary>使用狀態</summary>
-		[MaxLength(32)]
+		[MaxLength(32), Description("使用狀態")]
 		public string UseStatus { get; set; }
 
         /// <summary>建立人</summary>
+		[Description("建立人")]
 		public int CreateBy { get; set; }
 
         /// <summary>建立日期</summary>
+		[Description("建立日期")]
 		public DateTimeOffset CreateDate { get; set; }
 
         /// <summary>修改人</summary>
+		[Description("修改人")]
 		public int ModifyBy { get; set; }
 
         /// <summary>修改日期</summary>
+		[Description("修改日期")]
 		public DateTimeOffset ModifyDate { get; set; }
 
 		/// <summary>使用者角色</summary>
+		[Description("使用者角色")]
 		public virtual List<UserRole> UserRole { get; set; } = new List<UserRole>();
 
 	}
@@ -227,76 +234,81 @@ namespace CoreTpl.Dao.Database
 
 
     /// <summary>使用者</summary>
-	[Table(nameof(UserInfo))]
-	public class UserInfo 
+	[Table(nameof(UserInfo)), Description("使用者")]
+	public class UserInfo
 	{
 
         /// <summary>使用者Id</summary>
-		[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Description("使用者Id")]
 		public int UserId { get; set; }
 
         /// <summary>帳號</summary>
-		[Index, MaxLength(256), Required]
+		[Index, MaxLength(256), Required, Description("帳號")]
 		public string Account { get; set; }
 
 		/// <summary>姓名</summary>
-		[Index, MaxLength(256), Required]
+		[Index, MaxLength(256), Required, Description("姓名")]
 		public string UserName { get; set; }
 		
 		/// <summary>使用者類型</summary>
-		[MaxLength(32), Required]
+		[MaxLength(32), Required, Description("使用者類型")]
 		public string UserType { get; set; }
 		
 
 		/// <summary>E-Mail</summary>
-		[MaxLength(256)]
+		[MaxLength(256), Description("E-Mail")]
 		public string Email { get; set; }
 
         /// <summary>密碼</summary>
-		[MaxLength(256)]
+		[MaxLength(256), Description("密碼")]
 		public string Password { get; set; }
 
 		/// <summary>允許權限</summary>
-		[MaxLength(1024)]
+		[MaxLength(1024), Description("允許權限")]
 		public string AllowActList { get; set; }
 
         /// <summary>拒絕權限</summary>
-		[MaxLength(1024)]
+		[MaxLength(1024), Description("拒絕權限")]
 		public string DenyActList { get; set; }
 
 		/// <summary>使用狀態</summary>
-		[MaxLength(32), Required]
+		[MaxLength(32), Required, Description("使用狀態")]
 		public string UseStatus { get; set; }
 
         /// <summary>部門</summary>
-		[MaxLength(64)]
+		[MaxLength(64), Description("部門")]
 		public string Department { get; set; }
 
         /// <summary>分機號碼</summary>
-		[MaxLength(16)]
+		[MaxLength(16), Description("分機號碼")]
 		public string ExtensionNum { get; set; }
 
         /// <summary>職稱</summary>
-		[MaxLength(256)]
+		[MaxLength(256), Description("職稱")]
 		public string UserTitle { get; set; }
 
         /// <summary>備註</summary>
-		[MaxLength(2048)]
+		[MaxLength(2048), Description("備註")]
 		public string RemarkText { get; set; }
 
         /// <summary>建立人</summary>
+		[Description("建立人")]
 		public int CreateBy { get; set; }
 
         /// <summary>建立日期</summary>
+		[Description("建立日期")]
 		public DateTimeOffset CreateDate { get; set; }
 
         /// <summary>修改人</summary>
+		[Description("修改人")]
 		public int ModifyBy { get; set; }
 
         /// <summary>修改日期</summary>
+		[Description("修改日期")]
 		public DateTimeOffset ModifyDate { get; set; }
 
 		/// <summary>使用者角色</summary>
+		[Description("使用者角色")]
 		public virtual List<UserRole> UserRole { get; set; } = new List<UserRole>();
 
 	}
@@ -304,34 +316,39 @@ namespace CoreTpl.Dao.Database
 
 
 	/// <summary>使用者角色</summary>
-	[Table(nameof(UserRole))]
+	[Table(nameof(UserRole)), Description("使用者角色")]
 	public class UserRole
 	{
-
         /// <summary>使用者Id</summary>
-		[Key, Index]
+		[Key, Index, Description("使用者Id")]
 		public int UserId { get; set; }
 
         /// <summary>角色Id</summary>
-		[Key, Index]
+		[Key, Index, Description("角色Id")]
 		public int RoleId { get; set; }
 
         /// <summary>建立人</summary>
+		[Description("建立人")]
 		public int CreateBy { get; set; }
 
         /// <summary>建立日期</summary>
+		[Description("建立日期")]
 		public DateTimeOffset CreateDate { get; set; }
 
         /// <summary>修改人</summary>
+		[Description("修改人")]
 		public int ModifyBy { get; set; }
 
         /// <summary>修改日期</summary>
+		[Description("修改日期")]
 		public DateTimeOffset ModifyDate { get; set; }
 
         /// <summary>使用者</summary>
+		[Description("使用者")]
 		public virtual UserInfo UserInfo { get; set; }
 
 		/// <summary>角色</summary>
+		[Description("角色")]
 		public virtual RoleInfo RoleInfo { get; set; }
 
 	}
@@ -339,24 +356,27 @@ namespace CoreTpl.Dao.Database
 
 
 	/// <summary>使用者喜好設定</summary>
-	[Table(nameof(UserPreference))]
-	public class UserPreference 
+	[Table(nameof(UserPreference)), Description("使用者喜好設定")]
+	public class UserPreference
 	{
         /// <summary>使用者Id</summary>
-		[Key, Index]
+		[Key, Index, Description("使用者Id")]
 		public int UserId { get; set; }
 
 		/// <summary>設定名稱</summary>
-		[Key, Index, MaxLength(256)]
+		[Key, Index, MaxLength(256), Description("設定名稱")]
 		public string Name { get; set; }
 
 		/// <summary>設定值</summary>
+		[Description("設定值")]
 		public string Value { get; set; }
 
         /// <summary>建立日期</summary>
+		[Description("建立日期")]
 		public DateTimeOffset CreateDate { get; set; }
 
         /// <summary>修改日期</summary>
+		[Description("修改日期")]
 		public DateTimeOffset ModifyDate { get; set; }
 
 	}
@@ -364,34 +384,34 @@ namespace CoreTpl.Dao.Database
 
 
 	/// <summary>使用者登入記錄</summary>
-	[Table(nameof(UserSignInRecord))]
-	public class UserSignInRecord 
+	[Table(nameof(UserSignInRecord)), Description("使用者登入記錄")]
+	public class UserSignInRecord
 	{
-
-		[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Description("Id")]
 		public int Id { get; set; }
 
-        /// <summary>帳號</summary>
-		[MaxLength(256)]
+		/// <summary>帳號</summary>
+		[MaxLength(256), Description("帳號")]
 		public string Account { get; set; }
 
 		/// <summary>登入 IP</summary>
-		[Index, MaxLength(48)]
+		[Index, MaxLength(48), Description("登入 IP")]
 		public string SignInIp { get; set; }
 
 		/// <summary>登入類型</summary>
-		[MaxLength(32)]
+		[MaxLength(32), Description("登入類型")]
 		public string SignInType { get; set; }
 
         /// <summary>狀態代碼</summary>
-		[Index, MaxLength(32)]
+		[Index, MaxLength(32), Description("狀態代碼")]
 		public string StatusCode { get; set; }
 
 		/// <summary>狀態訊息</summary>
-		[MaxLength(256)]
+		[MaxLength(256), Description("狀態訊息")]
 		public string StatusMsg { get; set; }
 
         /// <summary>建立日期</summary>
+		[Description("建立日期")]
 		public DateTimeOffset CreateDate { get; set; }
 
 	}
