@@ -1,0 +1,27 @@
+﻿<#@ template language="C#" inherits="CodeGenerator.Templates.TemplateBase" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="CodeGenerator.Models" #>
+<# 
+	string className = TableMeta.Name + "Domain";
+	FilePath = TableMeta.NameSpace + "/" + className + ".cs";
+#>
+using System;
+using System.ComponentModel.DataAnnotations;
+using JustWin.API.Models;
+using <#= TableMeta.NameSpace #>.Domain.Enums;
+
+
+namespace <#= TableMeta.NameSpace #>.Domain 
+{
+	/// <summary><#= TableMeta.Description #></summary>
+	public class <#= className #> 
+	{
+		<# foreach(var col in TableMeta.Columns) { #>
+
+		/// <summary><#= col.Description #></summary>		
+		[Display(Name = "<#= col.DisplayName #>")]
+		public <#= col.CodeType #> <#= col.Name #> { get; set; }
+		<# } #>
+
+	}
+}
